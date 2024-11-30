@@ -55,6 +55,12 @@ Texture* ResourceManager::GetTexture(TextureID id) {
         printf("Invalid texture ID: %d\n", id);
         return nullptr;
     }
+
+    if (!textures[id]){
+        printf("texture ID: %d was not initialized!\n", id);
+        return nullptr;
+    }
+
     return textures[id];
 }
 

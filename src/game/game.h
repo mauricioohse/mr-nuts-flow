@@ -23,6 +23,7 @@ private:
     
     // Entities
     EntityID boxEntity;
+    EntityID squirrelEntity;
     
     // Resources (using IDs instead of pointers)
     SoundID hitSoundID;

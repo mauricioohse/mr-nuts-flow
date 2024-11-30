@@ -27,6 +27,7 @@ enum TextureID {
     TEXTURE_BOX,
     TEXTURE_WALL,
     TEXTURE_BOX_ANIM_SHEET,
+    TEXTURE_SQUIRREL,
     TEXTURE_MAX
 };
 
@@ -66,6 +67,7 @@ static const TextureResource GAME_TEXTURES[] = {
     {"assets/box.png", TEXTURE_BOX},
     {"assets/wall.png", TEXTURE_WALL},
     {"assets/box_sheet.png", TEXTURE_BOX_ANIM_SHEET},
+    {"assets/sprites/squirrel/squirrel.png", TEXTURE_SQUIRREL},
     // Add new textures here
 };
 

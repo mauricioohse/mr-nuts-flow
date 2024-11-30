@@ -16,7 +16,13 @@ bool Game::Init() {
     g_Engine.systemManager.RegisterSystem(&collisionSystem);
     g_Engine.systemManager.RegisterSystem(&gravitySystem);
 
-
+    // Create squirrel entity
+    squirrelEntity = g_Engine.entityManager.CreateEntity();
+    
+    Texture* squirrelTexture = ResourceManager::GetTexture(TEXTURE_SQUIRREL);    
+    // Add basic components
+    ADD_TRANSFORM(squirrelEntity, 400.0f, 100.0f, 0.0f, 1.0f);  // Center-top of screen
+    ADD_SPRITE(squirrelEntity, squirrelTexture);
 
     // Store IDs for later use
     hitSoundID = SOUND_HIT;
@@ -81,6 +87,7 @@ void Game::Render() {
 void Game::Cleanup() {
     // Cleanup entities
     g_Engine.entityManager.DestroyEntity(boxEntity);
+    g_Engine.entityManager.DestroyEntity(squirrelEntity);
     
     // Resources will be cleaned up by ResourceManager
 }
