@@ -31,18 +31,6 @@ bool Game::Init() {
     // Store IDs for later use
     hitSoundID = SOUND_HIT;
     fpsFontID = FONT_FPS;
-
-    // Create box entity
-    boxEntity = g_Engine.entityManager.CreateEntity();
-    
-    Texture* boxTexture = ResourceManager::GetTexture(TEXTURE_BOX_ANIM_SHEET);
-    
-    // Add and initialize components
-    ADD_TRANSFORM(boxEntity, 10.0f, 10.0f, 0.0f, 1.0f);
-    ADD_ANIMATION(boxEntity, boxTexture, 32, 32, 4, 4, 0.2f, true);
-    ADD_WASD_CONTROLLER(boxEntity, 200.0f, true);
-    ADD_COLLIDER(boxEntity, 32, 32, false, false);
-    ADD_GRAVITY(boxEntity, 1.0f);
     
     // Create wall entity
     EntityID wallEntity = g_Engine.entityManager.CreateEntity();
@@ -90,7 +78,6 @@ void Game::Render() {
 
 void Game::Cleanup() {
     // Cleanup entities
-    g_Engine.entityManager.DestroyEntity(boxEntity);
     g_Engine.entityManager.DestroyEntity(squirrelEntity);
     
     // Resources will be cleaned up by ResourceManager
