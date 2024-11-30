@@ -92,14 +92,19 @@ void Game::HandleInput(){
 
 void Game::Update(float deltaTime) {
     HandleInput();
-    
-    if (gameState == GAME_STATE_PLAYING) {
+
+    // Get squirrel position
+    SquirrelComponent *squirrel =
+        (SquirrelComponent *)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_SQUIRREL);
+
+
+    if (gameState == GAME_STATE_PLAYING && squirrel->state != SQUIRREL_STATE_DROPPING) {
         gameTimer += deltaTime;
-        
+
         // Get squirrel position
-        TransformComponent* squirrelTransform = 
-            (TransformComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
-            
+        TransformComponent *squirrelTransform =
+            (TransformComponent *)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
+
         // Check if squirrel reached bottom
         if (squirrelTransform->y >= GAME_HEIGHT - 200) {  // Leave some margin at bottom
             gameState = GAME_STATE_FINISHED;
