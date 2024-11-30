@@ -36,6 +36,7 @@ Squirrel has three states while flying:
   * Closed arms max speed is 300 px/s  
   * No control of rotation   
   * He has an acceleration boost in the direction he is pointed to besides gravity  
+  * If space is released, goes back to open arms  
 * Wiggling  
   * When squirrel collides with a white cloud, he enters wiggle state  
   * While wiggling, he decelerates for one second, up to 50 px/s  

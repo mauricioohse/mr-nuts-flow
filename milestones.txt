@@ -1,10 +1,69 @@
 MR NUTS FLOW MILESTONES
 =====================
 
+PROTOTYPE PHASE
+--------------
+1. Basic Squirrel Setup
+   - Create squirrel entity with basic sprite
+   - Add gravity component
+   - Implement vertical falling
 
+2. Basic State System
+   - Implement state machine for squirrel (open/closed arms)
+   - Add basic state switching with spacebar
 
+3. Basic Movement
+   - Implement rotation controls for open arms state
+   - Add speed limits for each state
+   - Implement acceleration in closed arms state
 
+4. Basic Cloud Setup
+   - Create cloud entities (white and black)
+   - Add basic collision detection
+   - Implement simple cloud placement
 
+5. Basic Gameplay Loop
+   - Add start position (helicopter drop)
+   - Add simple end condition (reach bottom)
+   - Implement basic timer
+
+REFINEMENT PHASE
+---------------
+1. Enhanced States
+   - Add wiggle state implementation
+   - Implement grace period after wiggle
+   - Polish state transitions
+   - Add visual feedback for state changes
+
+2. Cloud System Enhancement
+   - Implement different cloud sizes
+   - Add proper bounce physics for black clouds
+   - Fine-tune cloud placement for better gameplay
+   - Add cloud visual variations
+
+3. Visual Polish
+   - Add proper squirrel animations
+   - Implement camera follow behavior
+   - Add background elements
+   - Add visual effects for state changes
+
+4. Game Flow
+   - Add proper game start/end screens
+   - Implement score system based on time
+   - Add restart functionality
+   - Save best times
+
+5. Audio and Feedback
+   - Add sound effects for state changes
+   - Add collision sounds
+   - Implement background music
+   - Add visual feedback for speed
+
+6. Final Polish
+   - Add particle effects
+   - Fine-tune physics values
+   - Add screen shake effects
+   - Implement basic tutorial
 
 File system description
 
