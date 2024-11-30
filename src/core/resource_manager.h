@@ -54,11 +54,13 @@ enum TextureID {
     TEXTURE_BOX,
     TEXTURE_WALL,
     TEXTURE_BOX_ANIM_SHEET,
+    TEXTURE_SQUIRREL_SITTING,
     TEXTURE_SQUIRREL_OPEN,
     TEXTURE_SQUIRREL_OPENING,
     TEXTURE_SQUIRREL_CLOSED,
     TEXTURE_CLOUD_1,
     TEXTURE_CLOUD_2,
+    TEXTURE_HELICOPTER,
     TEXTURE_MAX
 };
 
@@ -73,11 +75,13 @@ static const TextureResource GAME_TEXTURES[] = {
     {"assets/box.png", TEXTURE_BOX},
     {"assets/wall.png", TEXTURE_WALL},
     {"assets/box_sheet.png", TEXTURE_BOX_ANIM_SHEET},
+    {"assets/sprites/squirrel/squirrel_sitting.png", TEXTURE_SQUIRREL_SITTING},
     {"assets/sprites/squirrel/squirrel_open.png", TEXTURE_SQUIRREL_OPEN},
     {"assets/sprites/squirrel/squirrel_opening.png", TEXTURE_SQUIRREL_OPENING},
     {"assets/sprites/squirrel/squirrel_closed.png", TEXTURE_SQUIRREL_CLOSED},
     {"assets/sprites/clouds/cloud_1.png", TEXTURE_CLOUD_1},
     {"assets/sprites/clouds/cloud_2.png", TEXTURE_CLOUD_2},
+    {"assets/sprites/helicopter.png", TEXTURE_HELICOPTER},
     // Add new textures here
 };
 

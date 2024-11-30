@@ -18,6 +18,13 @@ bool Game::Init() {
     g_Engine.systemManager.RegisterSystem(&cloudSystem);
 
 
+
+    // Create helicopter entity
+    EntityID helicopterEntity = g_Engine.entityManager.CreateEntity();
+    Texture* helicopterTexture = ResourceManager::GetTexture(TEXTURE_HELICOPTER);
+    ADD_TRANSFORM(helicopterEntity, 100.0f, 100.0f, 0.0f, 1.0f);  // Position above squirrel
+    ADD_SPRITE(helicopterEntity, helicopterTexture);
+
     // Create squirrel entity
     squirrelEntity = g_Engine.entityManager.CreateEntity();
     
@@ -43,16 +50,22 @@ bool Game::Init() {
     hitSoundID = SOUND_HIT;
     fpsFontID = FONT_FPS;
     
-    // Create wall entity
-    EntityID wallEntity = g_Engine.entityManager.CreateEntity();
-    
-    Texture* wallTexture = ResourceManager::GetTexture(TEXTURE_WALL);
-    
-    ADD_TRANSFORM(wallEntity, 100.0f, 100.0f, 0.0f, 1.0f);
-    ADD_SPRITE(wallEntity, wallTexture);
-    ADD_COLLIDER(wallEntity, wallTexture->width, wallTexture->height, true, false);
 
     gameTimer = 0.0f;
+
+
+    // Position squirrel below helicopter
+    TransformComponent* heliTransform = 
+        (TransformComponent*)g_Engine.componentArrays.GetComponentData(helicopterEntity, COMPONENT_TRANSFORM);
+    SpriteComponent* heliSprite = 
+        (SpriteComponent*)g_Engine.componentArrays.GetComponentData(helicopterEntity, COMPONENT_SPRITE);
+    
+    // Adjust squirrel starting position to be just below helicopter
+    TransformComponent* squirrelTransform = 
+        (TransformComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
+    squirrelTransform->x = heliTransform->x;
+    squirrelTransform->y = heliTransform->y + 30;
+
     return true;
 }
 

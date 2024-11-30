@@ -28,8 +28,10 @@ void SquirrelPhysicsSystem::Update(float deltaTime, EntityManager* entities, Com
             ApplyMaxSpeed(squirrel);
 
             // Update position
-            transform->x += squirrel->velocityX * deltaTime;
-            transform->y += squirrel->velocityY * deltaTime;
+            if(squirrel->state !=  SQUIRREL_STATE_DROPPING) {
+                transform->x += squirrel->velocityX * deltaTime;
+                transform->y += squirrel->velocityY * deltaTime;
+            }
         }
     }
 }
@@ -144,6 +146,16 @@ void SquirrelPhysicsSystem::HandleSquirrelState(SquirrelComponent* squirrel,
 
     // Handle state transitions
     switch (squirrel->state) {
+
+        case SQUIRREL_STATE_DROPPING:
+            if (Input::IsKeyDown(SDL_SCANCODE_SPACE)) squirrel->state = SQUIRREL_STATE_OPEN_ARMS;
+            // Don't apply gravity or controls while dropping
+            
+            sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_SITTING));
+            squirrel->velocityX = 0;
+            squirrel->velocityY = 0;
+            break;
+
         case SQUIRREL_STATE_OPEN_ARMS:
             squirrel->maxSpeed = SQUIRREL_OPEN_ARMS_MAX_SPEED;
             sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_OPEN));

@@ -5,6 +5,7 @@
 #include <stdio.h>
  
 typedef enum {
+    SQUIRREL_STATE_DROPPING,
     SQUIRREL_STATE_OPEN_ARMS,
     SQUIRREL_STATE_CLOSED_ARMS,
     SQUIRREL_STATE_WIGGLING
@@ -20,6 +21,7 @@ typedef enum {
 #define SQUIRREL_SPRITE_ROTATION_OFFSET -90.0f  // Rotate sprite 90 degrees to point feet down
 #define SQUIRREL_WIGGLE_DURATION 1.0f // in seconds
 #define SQUIRREL_GRACE_PERIOD 3.0f // in seconds
+#define SQUIRREL_DROP_DELAY 1.0f  // Time before squirrel starts falling
 
 struct SquirrelComponent : Component {
     // Gameplay state
@@ -29,6 +31,7 @@ struct SquirrelComponent : Component {
     float maxSpeed;         // Current max speed (changes with state)
     float rotation;         // Current rotation in degrees
     float targetRotation;   // Target rotation for smooth interpolation
+    float dropTimer;
 
     // Physics properties 
     float velocityX;
@@ -40,7 +43,8 @@ struct SquirrelComponent : Component {
     void Init() {
         printf("SquirrelComponent::Init() called\n");
         // Gameplay state init
-        state = SQUIRREL_STATE_OPEN_ARMS;
+        state = SQUIRREL_STATE_DROPPING;  // Start in dropping state
+        dropTimer = SQUIRREL_DROP_DELAY;
         wiggleTimer = 0;
         graceTimer = 0;
         maxSpeed = SQUIRREL_OPEN_ARMS_MAX_SPEED;  // Start with open arms speed
