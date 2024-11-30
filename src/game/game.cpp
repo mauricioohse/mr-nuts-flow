@@ -52,6 +52,7 @@ bool Game::Init() {
     ADD_SPRITE(wallEntity, wallTexture);
     ADD_COLLIDER(wallEntity, wallTexture->width, wallTexture->height, true, false);
 
+    gameTimer = 0.0f;
     return true;
 }
 
@@ -69,21 +70,40 @@ void Game::HandleInput(){
 
 void Game::Update(float deltaTime) {
     HandleInput();
+    gameTimer += deltaTime;  // Update timer
 }
 
 void Game::Render() {
     // Systems will handle rendering of entities
     g_Engine.systemManager.UpdateSystems(g_Engine.deltaTime, &g_Engine.entityManager, &g_Engine.componentArrays);
     
-    // Render FPS counter
+    // Get squirrel position for height calculation
+    TransformComponent* squirrelTransform = 
+        (TransformComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
+    
+    // Calculate remaining height (in hundreds of pixels)
+    float remainingHeight = (GAME_HEIGHT - squirrelTransform->y) / 100.0f;
+    
+    // Render FPS counter, timer and height
     char fpsText[32];
+    char timerText[32];
+    char heightText[32];
     snprintf(fpsText, sizeof(fpsText), "FPS: %.1f", 1.0f / g_Engine.deltaTime);
+    snprintf(timerText, sizeof(timerText), "Time: %.2f", gameTimer);
+    snprintf(heightText, sizeof(heightText), "Height: %.0f", remainingHeight);
     
     SDL_Color textColor = {255, 255, 255, 255};  // White color
     Font* fpsFont = ResourceManager::GetFont(fpsFontID);
     if (fpsFont) {
+        // Render FPS at top right
         ResourceManager::RenderTextAlignedTopRight(fpsFont, fpsText, textColor, 
             g_Engine.window->width - 10, 10);
+        // Render timer below FPS
+        ResourceManager::RenderTextAlignedTopRight(fpsFont, timerText, textColor, 
+            g_Engine.window->width - 10, 30);
+        // Render height below timer
+        ResourceManager::RenderTextAlignedTopRight(fpsFont, heightText, textColor, 
+            g_Engine.window->width - 10, 50);
     }
 }
 

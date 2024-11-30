@@ -34,6 +34,8 @@ private:
     // Resources (using IDs instead of pointers)
     SoundID hitSoundID;
     FontID fpsFontID;
+    
+    float gameTimer;  // Track elapsed time in seconds
 };
 
 extern Game g_Game;  // Global game instance 

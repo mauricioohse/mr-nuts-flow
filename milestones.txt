@@ -26,7 +26,7 @@ x  - Update render system to use camera offset
 4. Basic Cloud Setup
 x  - Create cloud entities (white and black)
 x  - Add basic collision detection
-   - Implement simple cloud placement
+x  - Implement simple cloud placement
 
 5. Basic Gameplay Loop
    - Add start position (helicopter drop)
