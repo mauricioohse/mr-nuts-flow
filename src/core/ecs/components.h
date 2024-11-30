@@ -46,6 +46,15 @@ struct SpriteComponent : Component {
         }
     }
 
+    void ChangeTexture(Texture* newTexture) {
+        texture = newTexture;
+        if (texture) {
+            width = texture->width;
+            height = texture->height;
+            srcRect = {0, 0, width, height};
+        }
+    }
+
     void Destroy() override {
         // Note: We don't destroy the texture here as it's managed by ResourceManager
         texture = nullptr;

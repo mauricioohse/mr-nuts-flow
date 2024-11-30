@@ -8,14 +8,18 @@ void SquirrelPhysicsSystem::Init() {
 
 void SquirrelPhysicsSystem::Update(float deltaTime, EntityManager* entities, ComponentArrays* components) {
     for (EntityID entity = 1; entity < MAX_ENTITIES; entity++) {
-        if (entities->HasComponent(entity, COMPONENT_TRANSFORM | COMPONENT_SQUIRREL)) {
+        if (entities->HasComponent(entity, COMPONENT_TRANSFORM | COMPONENT_SQUIRREL | COMPONENT_SPRITE)) {
             SquirrelComponent* squirrel = 
                 (SquirrelComponent*)components->GetComponentData(entity, COMPONENT_SQUIRREL);
-            
             TransformComponent* transform = 
                 (TransformComponent*)components->GetComponentData(entity, COMPONENT_TRANSFORM);
+            SpriteComponent* sprite =
+                (SpriteComponent*)components->GetComponentData(entity, COMPONENT_SPRITE);
 
-            // Handle rotation input first
+            // Handle state changes first
+            HandleStateInput(squirrel, sprite);
+
+            // Handle rotation input (only in open arms state)
             HandleRotationInput(squirrel);
 
             // Update velocity based on gravity and state
@@ -30,10 +34,6 @@ void SquirrelPhysicsSystem::Update(float deltaTime, EntityManager* entities, Com
             // Update position
             transform->x += squirrel->velocityX * deltaTime;
             transform->y += squirrel->velocityY * deltaTime;
-
-            // printf("squirrel id %d physics updated - pos:(%f,%f) vel:(%f,%f)\n", 
-            //        entity, transform->x, transform->y,
-            //        squirrel->velocityX, squirrel->velocityY);
         }
     }
 }
@@ -57,7 +57,7 @@ void SquirrelPhysicsSystem::UpdateRotation(SquirrelComponent* squirrel, Transfor
     while (squirrel->rotation < -180.0f) squirrel->rotation += 360.0f;
     
     // Update transform rotation
-    transform->rotation = squirrel->rotation ;//+ SQUIRREL_SPRITE_ROTATION_OFFSET;
+    transform->rotation = squirrel->rotation + SQUIRREL_SPRITE_ROTATION_OFFSET;
 }
 
 void SquirrelPhysicsSystem::UpdateVelocity(SquirrelComponent* squirrel, float deltaTime) {
@@ -138,5 +138,26 @@ void SquirrelPhysicsSystem::HandleRotationInput(SquirrelComponent* squirrel) {
         float newVelY = squirrel->velocityX * sinAngle + squirrel->velocityY * cosAngle;
         squirrel->velocityX = newVelX;
         squirrel->velocityY = newVelY;
+    }
+}
+
+void SquirrelPhysicsSystem::HandleStateInput(SquirrelComponent* squirrel, SpriteComponent* sprite) {
+    // Check for spacebar press to enter closed arms state
+    if (Input::IsKeyDown(SDL_SCANCODE_SPACE)) {
+        if (squirrel->state == SQUIRREL_STATE_OPEN_ARMS) {
+            squirrel->state = SQUIRREL_STATE_CLOSED_ARMS;
+            // Change sprite to closed arms version
+            sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_CLOSED));
+            // Update max speed for closed arms state
+            squirrel->maxSpeed = SQUIRREL_CLOSED_ARMS_MAX_SPEED;
+        }
+    } else {
+        if (squirrel->state == SQUIRREL_STATE_CLOSED_ARMS) {
+            squirrel->state = SQUIRREL_STATE_OPEN_ARMS;
+            // Change sprite back to open arms version
+            sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_OPEN));
+            // Update max speed for open arms state
+            squirrel->maxSpeed = SQUIRREL_OPEN_ARMS_MAX_SPEED;
+        }
     }
 }

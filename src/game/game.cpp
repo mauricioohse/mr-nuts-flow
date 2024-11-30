@@ -22,7 +22,7 @@ bool Game::Init() {
     // Create squirrel entity
     squirrelEntity = g_Engine.entityManager.CreateEntity();
     
-    Texture* squirrelTexture = ResourceManager::GetTexture(TEXTURE_SQUIRREL);    
+    Texture* squirrelTexture = ResourceManager::GetTexture(TEXTURE_SQUIRREL_OPEN);    
     // Add basic components
     ADD_TRANSFORM(squirrelEntity, 400.0f, 100.0f, 0.0f, 1.0f);  // Center-top of screen
     ADD_SQUIRREL(squirrelEntity);
