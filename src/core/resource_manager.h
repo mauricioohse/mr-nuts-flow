@@ -21,18 +21,6 @@ struct Sound {
     Mix_Chunk* sdlChunk;
 };
 
-// Define texture IDs
-enum TextureID {
-    TEXTURE_NONE = 0,
-    TEXTURE_BOX,
-    TEXTURE_WALL,
-    TEXTURE_BOX_ANIM_SHEET,
-    TEXTURE_SQUIRREL_OPEN,
-    TEXTURE_SQUIRREL_OPENING,
-    TEXTURE_SQUIRREL_CLOSED,
-    TEXTURE_CLOUD_1,
-    TEXTURE_MAX
-};
 
 // Define sound IDs
 enum SoundID {
@@ -49,11 +37,6 @@ enum FontID {
 };
 
 // Resource definitions
-struct TextureResource {
-    const char* path;
-    TextureID id;
-};
-
 struct SoundResource {
     const char* path;
     SoundID id;
@@ -65,6 +48,26 @@ struct FontResource {
     FontID id;
 };
 
+// Define texture IDs
+enum TextureID {
+    TEXTURE_NONE = 0,
+    TEXTURE_BOX,
+    TEXTURE_WALL,
+    TEXTURE_BOX_ANIM_SHEET,
+    TEXTURE_SQUIRREL_OPEN,
+    TEXTURE_SQUIRREL_OPENING,
+    TEXTURE_SQUIRREL_CLOSED,
+    TEXTURE_CLOUD_1,
+    TEXTURE_CLOUD_2,
+    TEXTURE_MAX
+};
+
+
+struct TextureResource {
+    const char* path;
+    TextureID id;
+};
+
 // Global resource definitions
 static const TextureResource GAME_TEXTURES[] = {
     {"assets/box.png", TEXTURE_BOX},
@@ -74,8 +77,12 @@ static const TextureResource GAME_TEXTURES[] = {
     {"assets/sprites/squirrel/squirrel_opening.png", TEXTURE_SQUIRREL_OPENING},
     {"assets/sprites/squirrel/squirrel_closed.png", TEXTURE_SQUIRREL_CLOSED},
     {"assets/sprites/clouds/cloud_1.png", TEXTURE_CLOUD_1},
+    {"assets/sprites/clouds/cloud_2.png", TEXTURE_CLOUD_2},
     // Add new textures here
 };
+
+
+
 
 static const SoundResource GAME_SOUNDS[] = {
     {"assets/sounds/hit.wav", SOUND_HIT},
