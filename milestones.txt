@@ -1,0 +1,28 @@
+MR NUTS FLOW MILESTONES
+=====================
+
+
+
+
+
+
+File system description
+
+roseengine/
+├── src/
+│   ├── core/           # Core engine systems
+│   │   ├── window.h    # Window management
+│   │   ├── window.cpp
+│   │   └── engine.h    # Main engine header
+│   ├── game/           # Game-specific code
+│   │   └── game.cpp    # Game implementation
+│   └── main.cpp        # Entry point
+├── include/            # External library headers (SDL2)
+├── lib/               # External library binaries
+├── dll/               # DLLs for Windows
+├── assets/            # Game assets
+├── bin/               # Build outputs
+│   ├── debug/
+│   └── release/
+├── web/               # Web build outputs
+└── Makefile
