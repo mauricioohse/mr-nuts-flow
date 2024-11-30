@@ -32,8 +32,12 @@ bool Game::Init() {
     ADD_TRANSFORM(cameraEntity, 400.0f, 100.0f, 0.0f, 1.0f);
     ADD_CAMERA(cameraEntity, WINDOW_WIDTH, WINDOW_HEIGHT, squirrelEntity);
 
-    // Create all clouds at once
+    // Create manual clouds
     CreateCloudsFromData(cloudList, sizeof(cloudList) / sizeof(CloudInitData));
+    
+    float cloudSpawnThreshold = 500; 
+    GenerateRandomClouds(cloudSpawnThreshold);
+
 
     // Store IDs for later use
     hitSoundID = SOUND_HIT;

@@ -18,30 +18,18 @@ void SquirrelPhysicsSystem::Update(float deltaTime, EntityManager* entities, Com
             SpriteComponent* sprite =
                 (SpriteComponent*)components->GetComponentData(entity, COMPONENT_SPRITE);
 
-            // Handle state changes first
-            HandleStateInput(squirrel, sprite);
-
-            // Handle rotation input (only in open arms state)
+            // Handle all state-related logic in one place
+            HandleSquirrelState(squirrel, sprite, deltaTime);
             HandleRotationInput(squirrel);
 
-            // Update velocity based on gravity and state
+            // Handle physics based on current state
             UpdateVelocity(squirrel, deltaTime);
-            
-            // Update rotation
             UpdateRotation(squirrel, transform, deltaTime);
-            
-            // Apply max speed limits
             ApplyMaxSpeed(squirrel);
 
             // Update position
             transform->x += squirrel->velocityX * deltaTime;
             transform->y += squirrel->velocityY * deltaTime;
-
-            //quick test
-            if (transform->y > WINDOW_HEIGHT)
-            {
-                transform->y=0;
-            }
         }
     }
 }
@@ -76,16 +64,6 @@ void SquirrelPhysicsSystem::UpdateVelocity(SquirrelComponent* squirrel, float de
     // Apply gravity
     squirrel->velocityY += squirrel->gravity * deltaTime;
     
-    // Handle wiggle state timing and transitions
-    if (squirrel->state == SQUIRREL_STATE_WIGGLING) {
-        squirrel->wiggleTimer += deltaTime;
-        
-        if (squirrel->wiggleTimer >= SQUIRREL_WIGGLE_DURATION) {
-            // Exit wiggle state
-            squirrel->state = SQUIRREL_STATE_OPEN_ARMS;
-            squirrel->wiggleTimer = 0.0f;
-        }
-    } 
     
     // If velocity direction changed significantly, update rotation
     float newAngle = atan2f(squirrel->velocityY, squirrel->velocityX);
@@ -94,18 +72,6 @@ void SquirrelPhysicsSystem::UpdateVelocity(SquirrelComponent* squirrel, float de
         squirrel->targetRotation = newAngle * 180.0f / M_PI;
     }
 
-    // Apply state-specific speed limits
-    switch(squirrel->state) {
-        case SQUIRREL_STATE_OPEN_ARMS:
-            squirrel->maxSpeed = SQUIRREL_OPEN_ARMS_MAX_SPEED;
-            break;
-        case SQUIRREL_STATE_CLOSED_ARMS:
-            squirrel->maxSpeed = SQUIRREL_CLOSED_ARMS_MAX_SPEED;
-            break;
-        case SQUIRREL_STATE_WIGGLING:
-            squirrel->maxSpeed = SQUIRREL_WIGGLE_MAX_SPEED;
-            break;
-    }
 }
 
 void SquirrelPhysicsSystem::ApplyMaxSpeed(SquirrelComponent* squirrel) {
@@ -127,7 +93,7 @@ void SquirrelPhysicsSystem::Destroy(){}
 
 void SquirrelPhysicsSystem::HandleRotationInput(SquirrelComponent* squirrel) {
     // Only handle rotation input in OPEN_ARMS state
-    if (squirrel->state != SQUIRREL_STATE_OPEN_ARMS) {
+    if (squirrel->state == SQUIRREL_STATE_WIGGLING ) {
         return;
     }
 
@@ -160,23 +126,58 @@ void SquirrelPhysicsSystem::HandleRotationInput(SquirrelComponent* squirrel) {
     }
 }
 
-void SquirrelPhysicsSystem::HandleStateInput(SquirrelComponent* squirrel, SpriteComponent* sprite) {
-    // Check for spacebar press to enter closed arms state
-    if (Input::IsKeyDown(SDL_SCANCODE_SPACE)) {
-        if (squirrel->state == SQUIRREL_STATE_OPEN_ARMS) {
-            squirrel->state = SQUIRREL_STATE_CLOSED_ARMS;
-            // Change sprite to closed arms version
-            sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_CLOSED));
-            // Update max speed for closed arms state
-            squirrel->maxSpeed = SQUIRREL_CLOSED_ARMS_MAX_SPEED;
-        }
-    } else {
-        if (squirrel->state == SQUIRREL_STATE_CLOSED_ARMS) {
+void SquirrelPhysicsSystem::HandleSquirrelState(SquirrelComponent* squirrel, 
+                                               SpriteComponent* sprite, 
+                                               float deltaTime) {
+    // Handle state timers first
+    if (squirrel->state == SQUIRREL_STATE_WIGGLING) {
+        squirrel->wiggleTimer += deltaTime;
+        if (squirrel->wiggleTimer >= SQUIRREL_WIGGLE_DURATION) {
+            // Exit wiggle state
             squirrel->state = SQUIRREL_STATE_OPEN_ARMS;
-            // Change sprite back to open arms version
-            sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_OPEN));
-            // Update max speed for open arms state
-            squirrel->maxSpeed = SQUIRREL_OPEN_ARMS_MAX_SPEED;
+            squirrel->wiggleTimer = 0.0f;
+            squirrel->graceTimer = SQUIRREL_GRACE_PERIOD;
         }
+    } else if (squirrel->graceTimer > 0.0f) {
+        squirrel->graceTimer -= deltaTime;
+    }
+
+    // Handle state transitions
+    switch (squirrel->state) {
+        case SQUIRREL_STATE_OPEN_ARMS:
+            squirrel->maxSpeed = SQUIRREL_OPEN_ARMS_MAX_SPEED;
+            sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_OPEN));
+            if (Input::IsKeyDown(SDL_SCANCODE_SPACE) && squirrel->state == SQUIRREL_STATE_OPEN_ARMS) {
+                squirrel->state = SQUIRREL_STATE_CLOSED_ARMS;
+            }
+            break;
+
+        case SQUIRREL_STATE_CLOSED_ARMS:
+            squirrel->maxSpeed = SQUIRREL_CLOSED_ARMS_MAX_SPEED;
+            sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_CLOSED));
+            if (!Input::IsKeyDown(SDL_SCANCODE_SPACE) && squirrel->state == SQUIRREL_STATE_CLOSED_ARMS) {
+                squirrel->state = SQUIRREL_STATE_OPEN_ARMS;
+            }
+            break;
+
+        case SQUIRREL_STATE_WIGGLING:
+            squirrel->maxSpeed = SQUIRREL_WIGGLE_MAX_SPEED;
+            sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_OPEN));
+
+                // Handle wiggle state timing and transitions
+            if (squirrel->state == SQUIRREL_STATE_WIGGLING) {
+
+                squirrel->wiggleTimer += deltaTime;
+
+                if (squirrel->wiggleTimer >= SQUIRREL_WIGGLE_DURATION) {
+                    // Exit wiggle state
+                    squirrel->state = SQUIRREL_STATE_OPEN_ARMS;
+                    squirrel->wiggleTimer = 0.0f;
+                }
+            }
+
+            break;
     }
 }
+
+

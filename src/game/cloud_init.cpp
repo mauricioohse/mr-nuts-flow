@@ -1,7 +1,8 @@
 #include "cloud_init.h"
 #include "../core/engine.h"
 #include "../core/resource_manager.h"
-
+#include <stdlib.h>
+#include <time.h>
 
 void CreateCloudsFromData(const CloudInitData* cloudList, int count) {
     for (int i = 0; i < count; i++) {
@@ -15,4 +16,58 @@ void CreateCloudsFromData(const CloudInitData* cloudList, int count) {
         ADD_SPRITE(cloudEntity, tex);
         ADD_CLOUD(cloudEntity, data.type);
     }
+}
+
+float GetCloudDensityMultiplier(float y) {
+    // Returns a value between 1.0 and 3.0 based on depth
+    // More clouds as you go deeper (higher y values)
+    float depthRatio = y / GAME_HEIGHT;
+    return 1.0f + (depthRatio * 2.0f); // Linear increase up to 3x density
+}
+
+void GenerateRandomClouds(float playerStartY) {
+    srand(5); // Initialize seed
+
+    // Create an array to store cloud data
+    CloudInitData clouds[MAX_CLOUDS];
+    int cloudCount = 0;
+
+    // Generate clouds for each vertical section
+    for (float y = playerStartY; y < GAME_HEIGHT && cloudCount < MAX_CLOUDS; y += WINDOW_HEIGHT) {
+        // Calculate how many clouds to place in this section
+        float densityMultiplier = GetCloudDensityMultiplier(y);
+        int cloudsInSection = (int)(CLOUDS_PER_SECTION * densityMultiplier);
+
+        // Generate clouds for this section
+        for (int i = 0; i < cloudsInSection && cloudCount < MAX_CLOUDS; i++) {
+            CloudInitData cloud;
+            
+            // Random position within game width and current height section
+            cloud.x = (float)(rand() % GAME_WIDTH);
+            cloud.y = y + (float)(rand() % WINDOW_HEIGHT);
+
+            // Determine cloud type (20% chance for black clouds)
+            cloud.type = (rand() % 5 == 0) ? CLOUD_BLACK : CLOUD_WHITE;
+
+            // Check minimum spacing with previously placed clouds
+            bool tooClose = false;
+            for (int j = 0; j < cloudCount; j++) {
+                float dx = cloud.x - clouds[j].x;
+                float dy = cloud.y - clouds[j].y;
+                float distSq = dx * dx + dy * dy;
+                if (distSq < MIN_CLOUD_SPACING * MIN_CLOUD_SPACING) {
+                    tooClose = true;
+                    break;
+                }
+            }
+
+            // If cloud placement is valid, add it to the array
+            if (!tooClose) {
+                clouds[cloudCount++] = cloud;
+            }
+        }
+    }
+
+    // Create all the clouds
+    CreateCloudsFromData(clouds, cloudCount);
 } 

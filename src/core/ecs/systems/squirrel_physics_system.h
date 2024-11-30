@@ -18,6 +18,7 @@ private:
     void ApplyMaxSpeed(SquirrelComponent* squirrel);
     void HandleRotationInput(SquirrelComponent* squirrel);
     void HandleStateInput(SquirrelComponent *squirrel, SpriteComponent *sprite);
+    void HandleSquirrelState(SquirrelComponent *squirrel, SpriteComponent *sprite, float deltaTime);
 };
 
 #endif 

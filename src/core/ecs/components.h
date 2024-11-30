@@ -196,25 +196,20 @@ struct CameraComponent : Component {
         viewportHeight = height;
         targetEntity = target;
         
-        // Initialize with "infinite" bounds
-        minX = minY = -FLT_MAX;
-        maxX = maxY = FLT_MAX;
+        // Set reasonable bounds for our game world (3 windows wide, 50 windows tall)
+        minX = 0.0f;
+        maxX = width * 3.0f;
+        minY = 0.0f;
+        maxY = height * 50.0f;
     }
     
-    void SetBounds(float minimumX, float maximumX, float minimumY, float maximumY) {
-        minX = minimumX;
-        maxX = maximumX;
-        minY = minimumY;
-        maxY = maximumY;
-    }
-
     void Destroy() override {
         x = y = 0.0f;
         targetX = targetY = 0.0f;
         viewportWidth = viewportHeight = 0.0f;
         targetEntity = 0;
-        minX = minY = -FLT_MAX;
-        maxX = maxY = FLT_MAX;
+        minX = minY = 0.0f;
+        maxX = maxY = 0.0f;
     }
 };
 
