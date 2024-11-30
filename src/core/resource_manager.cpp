@@ -174,6 +174,20 @@ int ResourceManager::RenderTextAlignedTopRight(Font* font, const char* text, SDL
     return false;
 }
 
+
+void ResourceManager::RenderTextAlignedCenter(Font* font, const char* text, SDL_Color color, int x, int y) {
+    Texture* texture = ResourceManager::GetTextTexture(font, text, color);
+
+    if (texture) {
+        // Calculate centered position
+        int destX = x - texture->width/2;
+        int destY = y - texture->height/2;
+        
+        RenderTexture(texture, destX, destY);
+        UnloadTexture(texture);
+    }
+}
+
 Sound* ResourceManager::LoadSound(const char* path, SoundID id) {
     if (id <= SOUND_NONE || id >= SOUND_MAX) {
         printf("Invalid sound ID: %d\n", id);
@@ -291,4 +305,4 @@ void ResourceManager::UnloadAllResources() {
     for (int i = 1; i < FONT_MAX; i++) {
         UnloadFont((FontID)i);
     }
-} 
+}

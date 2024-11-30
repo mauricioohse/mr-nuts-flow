@@ -116,6 +116,7 @@ struct ResourceManager {
     static void UnloadFont(Font* font);
     static Texture *GetTextTexture(Font *font, const char *text, SDL_Color color);
     static int RenderTextAlignedTopRight(Font* font, const char* text, SDL_Color color, int x, int y);
+    static void RenderTextAlignedCenter(Font* font, const char* text, SDL_Color color, int x, int y);
 
     // Sound management
     static Sound* LoadSound(const char* path);

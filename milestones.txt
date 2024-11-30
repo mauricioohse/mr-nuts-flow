@@ -29,7 +29,7 @@ x  - Add basic collision detection
 x  - Implement simple cloud placement
 
 5. Basic Gameplay Loop
-   - Add start position (helicopter drop)
+x  - Add start position (helicopter drop)
    - Add simple end condition (reach bottom)
    - Implement basic timer
 

@@ -20,7 +20,7 @@ bool Game::Init() {
 
 
     // Create helicopter entity
-    EntityID helicopterEntity = g_Engine.entityManager.CreateEntity();
+    helicopterEntity = g_Engine.entityManager.CreateEntity();
     Texture* helicopterTexture = ResourceManager::GetTexture(TEXTURE_HELICOPTER);
     ADD_TRANSFORM(helicopterEntity, 100.0f, 100.0f, 0.0f, 1.0f);  // Position above squirrel
     ADD_SPRITE(helicopterEntity, helicopterTexture);
@@ -66,6 +66,10 @@ bool Game::Init() {
     squirrelTransform->x = heliTransform->x;
     squirrelTransform->y = heliTransform->y + 30;
 
+    gameState = GAME_STATE_PLAYING;
+    bestTime = 999999.0f;  // Some high number
+    isNewRecord = false;
+
     return true;
 }
 
@@ -79,11 +83,34 @@ void Game::HandleInput(){
             Mix_PlayChannel(-1, hitSound->sdlChunk, 0);
         }
     }
+    
+    // Add reset on 'R' key press
+    if (Input::IsKeyPressed(SDL_SCANCODE_R)) {
+        Reset();
+    }
 }
 
 void Game::Update(float deltaTime) {
     HandleInput();
-    gameTimer += deltaTime;  // Update timer
+    
+    if (gameState == GAME_STATE_PLAYING) {
+        gameTimer += deltaTime;
+        
+        // Get squirrel position
+        TransformComponent* squirrelTransform = 
+            (TransformComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
+            
+        // Check if squirrel reached bottom
+        if (squirrelTransform->y >= GAME_HEIGHT - 200) {  // Leave some margin at bottom
+            gameState = GAME_STATE_FINISHED;
+            
+            // Check if this is a new record
+            if (gameTimer < bestTime) {
+                bestTime = gameTimer;
+                isNewRecord = true;
+            }
+        }
+    }
 }
 
 void Game::Render() {
@@ -117,6 +144,26 @@ void Game::Render() {
         // Render height below timer
         ResourceManager::RenderTextAlignedTopRight(fpsFont, heightText, textColor, 
             g_Engine.window->width - 10, 50);
+        
+        // If game is finished, show completion message
+        if (gameState == GAME_STATE_FINISHED) {
+            char finishText[64];
+            snprintf(finishText, sizeof(finishText), "FINISHED! Time: %.2f", gameTimer);
+
+            SquirrelComponent *squirrel =
+                (SquirrelComponent *)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_SQUIRREL);
+
+            squirrel->state = SQUIRREL_STATE_DROPPING;
+
+            // Center the text
+            ResourceManager::RenderTextAlignedCenter(fpsFont, finishText, textColor,
+                g_Engine.window->width/2, g_Engine.window->height/2);
+                
+            if (isNewRecord) {
+                ResourceManager::RenderTextAlignedCenter(fpsFont, "NEW RECORD!", textColor,
+                    g_Engine.window->width/2, g_Engine.window->height/2 + 30);
+            }
+        }
     }
 }
 
@@ -125,4 +172,33 @@ void Game::Cleanup() {
     g_Engine.entityManager.DestroyEntity(squirrelEntity);
     
     // Resources will be cleaned up by ResourceManager
+}
+
+void Game::Reset() {
+    // Reset game state
+    gameState = GAME_STATE_PLAYING;
+    gameTimer = 0.0f;
+    isNewRecord = false;
+    
+    // Reset helicopter position
+    TransformComponent* heliTransform = 
+        (TransformComponent*)g_Engine.componentArrays.GetComponentData(helicopterEntity, COMPONENT_TRANSFORM);
+    heliTransform->x = 100.0f;
+    heliTransform->y = 100.0f;
+    
+    // Reset squirrel position and state
+    TransformComponent* squirrelTransform = 
+        (TransformComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
+    SquirrelComponent* squirrel = 
+        (SquirrelComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_SQUIRREL);
+        
+    // Position squirrel below helicopter
+    squirrelTransform->x = heliTransform->x;
+    squirrelTransform->y = heliTransform->y + 30;
+    
+    // Reset squirrel state
+    squirrel->state = SQUIRREL_STATE_DROPPING;
+    squirrel->velocityX = 0;
+    squirrel->velocityY = 0;
+    squirrel->rotation = 0;
 }

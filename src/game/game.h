@@ -9,6 +9,11 @@
 #include "../core/ecs/systems/camera_system.h"
 #include "../core/ecs/systems/cloud_system.h"
 
+enum GameState {
+    GAME_STATE_PLAYING,
+    GAME_STATE_FINISHED
+};
+
 class Game {
 public:
     bool Init();
@@ -16,6 +21,7 @@ public:
     void Update(float deltaTime);
     void Render();
     void Cleanup();
+    void Reset();
 
 private:
     // Systems
@@ -30,12 +36,16 @@ private:
     // Entities
     EntityID squirrelEntity;
     EntityID cameraEntity;
+    EntityID helicopterEntity;
     
     // Resources (using IDs instead of pointers)
     SoundID hitSoundID;
     FontID fpsFontID;
     
     float gameTimer;  // Track elapsed time in seconds
+    GameState gameState;
+    bool isNewRecord;  // To track if current time is best time
+    float bestTime;    // Store best completion time
 };
 
 extern Game g_Game;  // Global game instance 

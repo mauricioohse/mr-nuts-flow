@@ -46,9 +46,8 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
             squirrelBottom > cloudTop && squirrelTop < cloudBottom) {
             
             // Different behavior based on cloud type
-            if (cloud->type == CLOUD_WHITE && !cloud->wasHit) {
-                // Set cloud as hit so it can't be used again
-                cloud->wasHit = true;
+            if (cloud->type == CLOUD_WHITE) {
+
                 
                 // Put squirrel in wiggling state regardless of direction
                 squirrel->state = SQUIRREL_STATE_WIGGLING;
