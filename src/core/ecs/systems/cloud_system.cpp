@@ -29,10 +29,10 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
         SpriteComponent* cloudSprite = &components->sprites[cloudEntity];
         
         // Calculate cloud boundaries
-        float cloudTop = cloudTransform->y;
-        float cloudBottom = cloudTransform->y + cloudSprite->height;
-        float cloudLeft = cloudTransform->x;
-        float cloudRight = cloudTransform->x + cloudSprite->width;
+        float cloudTop = cloudTransform->y + COLLISION_GRACE_DISTANCE;
+        float cloudBottom = cloudTransform->y + cloudSprite->height - COLLISION_GRACE_DISTANCE;
+        float cloudLeft = cloudTransform->x + COLLISION_GRACE_DISTANCE;
+        float cloudRight = cloudTransform->x + cloudSprite->width - COLLISION_GRACE_DISTANCE;
         
         // Calculate squirrel boundaries
         SpriteComponent* squirrelSprite = &components->sprites[squirrelEntity];
