@@ -4,17 +4,17 @@ MR NUTS FLOW MILESTONES
 PROTOTYPE PHASE
 --------------
 1. Basic Squirrel Setup
-   - Create squirrel entity with basic sprite
-   - Add gravity component
-   - Implement vertical falling
+x  - Create squirrel entity with basic sprite
+x  - Add gravity component
+x  - Implement vertical falling
 
 2. Basic State System
    - Implement state machine for squirrel (open/closed arms)
    - Add basic state switching with spacebar
 
 3. Basic Movement
-   - Implement rotation controls for open arms state
-   - Add speed limits for each state
+x  - Implement rotation controls for open arms state
+x  - Add speed limits for each state
    - Implement acceleration in closed arms state
 
 4. Basic Cloud Setup

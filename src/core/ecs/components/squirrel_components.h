@@ -10,12 +10,23 @@ typedef enum {
     SQUIRREL_STATE_WIGGLING
 } SquirrelState;
 
+// Physics constants
+#define SQUIRREL_GRAVITY 500.0f          // Increased for more noticeable falling
+#define SQUIRREL_OPEN_ARMS_MAX_SPEED 100.0f
+#define SQUIRREL_CLOSED_ARMS_MAX_SPEED 300.0f
+#define SQUIRREL_WIGGLE_MAX_SPEED 50.0f
+#define SQUIRREL_ROTATION_SPEED 90.0f  // Degrees per second
+#define SQUIRREL_TAP_ROTATION 15.0f     // Degrees per tap
+#define SQUIRREL_SPRITE_ROTATION_OFFSET -90.0f  // Rotate sprite 90 degrees to point feet down
+
 struct SquirrelComponent : Component {
     // Gameplay state
     SquirrelState state;
     float wiggleTimer;      // For wiggle state duration
     float graceTimer;       // For post-wiggle grace period
     float maxSpeed;         // Current max speed (changes with state)
+    float rotation;         // Current rotation in degrees
+    float targetRotation;   // Target rotation for smooth interpolation
 
     // Physics properties 
     float velocityX;
@@ -30,12 +41,14 @@ struct SquirrelComponent : Component {
         state = SQUIRREL_STATE_OPEN_ARMS;
         wiggleTimer = 0;
         graceTimer = 0;
-        maxSpeed = 300;
+        maxSpeed = SQUIRREL_OPEN_ARMS_MAX_SPEED;  // Start with open arms speed
+        rotation = 0.0f;        // Start pointing straight down
+        targetRotation = 0.0f;
 
         // Physics init
         velocityX = 0;
         velocityY = 0;
-        gravity = 100.0f;
+        gravity = SQUIRREL_GRAVITY;
         acceleration = 0;
         rotationSpeed = 0;
     }
