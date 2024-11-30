@@ -16,6 +16,7 @@ void* ComponentArrays::GetComponentData(EntityID entity, ComponentType type) {
         case COMPONENT_ANIMATION:  return &animations[entity];
         case COMPONENT_GRAVITY:  return &gravities[entity];
         case COMPONENT_SQUIRREL:  return &squirrelComponents[entity];
+        case COMPONENT_CAMERA:  return &cameras[entity];
         default:
             printf("Warning: Unknown component type %u\n", type);
             return nullptr;
@@ -71,5 +72,14 @@ void InitSquirrel(EntityID entity){
     }
 }
 
+void InitCamera(EntityID entity, float viewportWidth, float viewportHeight, EntityID target) {
+    if (entity >= MAX_ENTITIES) return;
+    
+    CameraComponent* camera = (CameraComponent*) g_Engine.componentArrays.GetComponentData(entity, COMPONENT_CAMERA);
+    if(camera) {
+        camera->Init(viewportWidth, viewportHeight, target);
+        printf("Camera component initialized for entity %d\n", entity);
+    }
+}
 
 void InitSquirrelPhysics(EntityID entity);

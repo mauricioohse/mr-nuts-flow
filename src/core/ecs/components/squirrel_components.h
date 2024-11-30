@@ -11,9 +11,9 @@ typedef enum {
 } SquirrelState;
 
 // Physics constants
-#define SQUIRREL_GRAVITY 500.0f          // Increased for more noticeable falling
-#define SQUIRREL_OPEN_ARMS_MAX_SPEED 100.0f
-#define SQUIRREL_CLOSED_ARMS_MAX_SPEED 300.0f
+#define SQUIRREL_GRAVITY 100.0f          // Increased for more noticeable falling
+#define SQUIRREL_OPEN_ARMS_MAX_SPEED 200.0f
+#define SQUIRREL_CLOSED_ARMS_MAX_SPEED 400.0f
 #define SQUIRREL_WIGGLE_MAX_SPEED 50.0f
 #define SQUIRREL_ROTATION_SPEED 90.0f  // Degrees per second
 #define SQUIRREL_TAP_ROTATION 15.0f     // Degrees per tap

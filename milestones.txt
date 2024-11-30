@@ -9,13 +9,19 @@ x  - Add gravity component
 x  - Implement vertical falling
 
 2. Basic State System
-   - Implement state machine for squirrel (open/closed arms)
-   - Add basic state switching with spacebar
+x  - Implement state machine for squirrel (open/closed arms)
+x  - Add basic state switching with spacebar
 
 3. Basic Movement
 x  - Implement rotation controls for open arms state
 x  - Add speed limits for each state
-   - Implement acceleration in closed arms state
+x  - Implement acceleration in closed arms state
+
+3.5 Camera following the squirrel
+x  - Create camera component with viewport properties
+x  - Add camera system to handle viewport transformations
+x  - Implement smooth follow behavior
+x  - Update render system to use camera offset
 
 4. Basic Cloud Setup
    - Create cloud entities (white and black)

@@ -12,11 +12,13 @@ bool Game::Init() {
     collisionSystem.Init();
     gravitySystem.Init();
     squirrelSystem.Init();
+    cameraSystem.Init();
     g_Engine.systemManager.RegisterSystem(&renderSystem);
     g_Engine.systemManager.RegisterSystem(&wasdSystem);
     g_Engine.systemManager.RegisterSystem(&collisionSystem);
     g_Engine.systemManager.RegisterSystem(&gravitySystem);
     g_Engine.systemManager.RegisterSystem(&squirrelSystem);
+    g_Engine.systemManager.RegisterSystem(&cameraSystem);
 
 
     // Create squirrel entity
@@ -27,6 +29,12 @@ bool Game::Init() {
     ADD_TRANSFORM(squirrelEntity, 400.0f, 100.0f, 0.0f, 1.0f);  // Center-top of screen
     ADD_SQUIRREL(squirrelEntity);
     ADD_SPRITE(squirrelEntity, squirrelTexture);
+
+    // create camera
+    cameraEntity = g_Engine.entityManager.CreateEntity();
+    ADD_TRANSFORM(cameraEntity, 400.0f, 100.0f, 0.0f, 1.0f);
+    ADD_CAMERA(cameraEntity, WINDOW_WIDTH, WINDOW_HEIGHT, squirrelEntity);
+
 
     // Store IDs for later use
     hitSoundID = SOUND_HIT;

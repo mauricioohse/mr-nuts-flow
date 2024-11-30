@@ -19,6 +19,7 @@ enum ComponentTypes {
     COMPONENT_ANIMATION = 1 << 4,
     COMPONENT_GRAVITY = 1 << 5,
     COMPONENT_SQUIRREL = 1 << 6,
+    COMPONENT_CAMERA = 1 << 7,
     // Add more component types here
 }; 
 
@@ -68,4 +69,11 @@ enum ComponentTypes {
         g_Engine.entityManager.AddComponentToEntity(entity, COMPONENT_SQUIRREL); \
         InitSquirrel(entity); \
     } while(0)
+
+#define ADD_CAMERA(entity, viewportWidth, viewportHeight, targetEntity) \
+    do { \
+        g_Engine.entityManager.AddComponentToEntity(entity, COMPONENT_CAMERA); \
+        InitCamera(entity, viewportWidth, viewportHeight, targetEntity); \
+    } while(0)
+
 

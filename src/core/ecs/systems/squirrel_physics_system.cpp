@@ -1,6 +1,8 @@
 #include "squirrel_physics_system.h"
 #include <math.h>
 #include <stdio.h>
+#include "../../engine_constants.h"
+
 
 void SquirrelPhysicsSystem::Init() {
     // Nothing to initialize
@@ -34,6 +36,12 @@ void SquirrelPhysicsSystem::Update(float deltaTime, EntityManager* entities, Com
             // Update position
             transform->x += squirrel->velocityX * deltaTime;
             transform->y += squirrel->velocityY * deltaTime;
+
+            //quick test
+            if (transform->y > WINDOW_HEIGHT)
+            {
+                transform->y=0;
+            }
         }
     }
 }

@@ -10,16 +10,14 @@
 #include "ecs/components.h"
 #include "ecs/entity.h"
 #include "ecs/entity_test.h"
+#include "engine_constants.h"
+
 // #include "window.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #include <emscripten/html5.h>
 #endif
-
-// Core engine constants
-#define TARGET_FPS 60
-#define FRAME_TIME (1000.0f / TARGET_FPS)
 
 // Forward declarations
 struct Window;

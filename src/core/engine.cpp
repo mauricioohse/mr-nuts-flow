@@ -34,7 +34,7 @@ bool Engine::Init() {
 
     // Create window
     g_Engine.window = new Window();
-    if (!g_Engine.window->Init("RoseEngine", 800, 600)) {
+    if (!g_Engine.window->Init("RoseEngine", WINDOW_WIDTH, WINDOW_HEIGHT)) {
         return false;
     }
 

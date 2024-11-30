@@ -8,58 +8,51 @@ void RenderSystem::Init() {
 }
 
 void RenderSystem::Update(float deltaTime, EntityManager* entities, ComponentArrays* components) {
-    // First render regular sprites
+    // Find the active camera (assuming only one camera for now)
+    CameraComponent* camera = nullptr;
     for (EntityID entity = 1; entity < MAX_ENTITIES; entity++) {
-        if (entities->HasComponent(entity, COMPONENT_TRANSFORM | COMPONENT_SPRITE) &&
-            !entities->HasComponent(entity, COMPONENT_ANIMATION)) {  // Only if not animated
-            
+        if (entities->HasComponent(entity, COMPONENT_CAMERA)) {
+            camera = &components->cameras[entity];
+            // printf("Active camera found at entity %d\n", entity);
+            break;
+        }
+    }
+
+    // Render all entities with transform and sprite components
+    for (EntityID entity = 1; entity < MAX_ENTITIES; entity++) {
+        if (entities->HasComponent(entity, COMPONENT_TRANSFORM | COMPONENT_SPRITE)) {
             TransformComponent* transform = 
                 (TransformComponent*)components->GetComponentData(entity, COMPONENT_TRANSFORM);
             SpriteComponent* sprite = 
                 (SpriteComponent*)components->GetComponentData(entity, COMPONENT_SPRITE);
-            
-            if (transform && sprite && sprite->texture) {
-                RenderEntity(transform, sprite);
-            }
-        }
-    }
 
-    // Then handle animated entities
-    for (EntityID entity = 1; entity < MAX_ENTITIES; entity++) {
-        if (entities->HasComponent(entity, COMPONENT_TRANSFORM | COMPONENT_ANIMATION)) {
-            TransformComponent* transform = 
-                (TransformComponent*)components->GetComponentData(entity, COMPONENT_TRANSFORM);
-            AnimationComponent* anim = 
-                (AnimationComponent*)components->GetComponentData(entity, COMPONENT_ANIMATION);
-            
-            if (transform && anim && anim->spriteSheet) {
-                // Update animation
-                if (anim->playing) {
-                    anim->accumulator += deltaTime;
-                    if (anim->accumulator >= anim->frameTime) {
-                        anim->accumulator -= anim->frameTime;
-                        
-                        anim->currentFrame++;
-                        if (anim->currentFrame >= anim->totalFrames) {
-                            if (anim->loop) {
-                                anim->currentFrame = 0;
-                            } else {
-                                anim->currentFrame = anim->totalFrames - 1;
-                                anim->playing = false;
-                            }
-                        }
-                        
-                        // Update frame rectangle
-                        int row = anim->currentFrame / anim->columns;
-                        int col = anim->currentFrame % anim->columns;
-                        anim->frameRect.x = col * anim->frameWidth;
-                        anim->frameRect.y = row * anim->frameHeight;
-                    }
-                }
+            if (!transform || !sprite || !sprite->texture) continue;
 
-                // Render the current frame
-                RenderAnimatedEntity(transform, anim);
+            // Calculate screen position (with camera offset if camera exists)
+            float screenX = transform->x;
+            float screenY = transform->y;
+            
+            if (camera) {
+                screenX -= camera->x;
+                screenY -= camera->y;
             }
+
+            SDL_Rect destRect = {
+                (int)screenX - sprite->width/2,
+                (int)screenY - sprite->height/2,
+                sprite->width,
+                sprite->height
+            };
+
+            SDL_RenderCopyEx(
+                g_Engine.window->renderer,
+                sprite->texture->sdlTexture,
+                &sprite->srcRect,
+                &destRect,
+                transform->rotation,
+                NULL,
+                SDL_FLIP_NONE
+            );
         }
     }
 }

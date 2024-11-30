@@ -6,6 +6,7 @@
 #include "../core/ecs/systems/collision_system.h"
 #include "../core/ecs/systems/gravity_system.h"
 #include "../core/ecs/systems/squirrel_physics_system.h"
+#include "../core/ecs/systems/camera_system.h"
 
 class Game {
 public:
@@ -22,9 +23,11 @@ private:
     CollisionSystem collisionSystem;
     GravitySystem gravitySystem;
     SquirrelPhysicsSystem squirrelSystem;
+    CameraSystem cameraSystem;
     
     // Entities
     EntityID squirrelEntity;
+    EntityID cameraEntity;
     
     // Resources (using IDs instead of pointers)
     SoundID hitSoundID;

@@ -5,7 +5,12 @@
 #include "string.h"
 #include "stdio.h"
 #include "base_component.h"
+#include <float.h>
 
+// Add camera constants
+#define CAMERA_FOLLOW_SPEED 5.0f     // How fast camera catches up to target
+#define CAMERA_DEADZONE_X 100.0f     // Horizontal deadzone before camera starts moving
+#define CAMERA_DEADZONE_Y 100.0f     // Vertical deadzone before camera starts moving
 
 struct TransformComponent : Component {
     float x, y;
@@ -172,6 +177,46 @@ struct GravityComponent : Component {
     }
 };
 
+struct CameraComponent : Component {
+    float x, y;              // Camera position (top-left corner)
+    float targetX, targetY;  // Position camera is trying to reach
+    float viewportWidth;     // Width of the camera view
+    float viewportHeight;    // Height of the camera view
+    EntityID targetEntity;   // Entity the camera should follow
+    
+    // Bounds for camera movement
+    float minX, maxX;        // Horizontal bounds
+    float minY, maxY;        // Vertical bounds
+    
+    void Init(float width, float height, EntityID target = 0) {
+        x = y = 0.0f;
+        targetX = targetY = 0.0f;
+        viewportWidth = width;
+        viewportHeight = height;
+        targetEntity = target;
+        
+        // Initialize with "infinite" bounds
+        minX = minY = -FLT_MAX;
+        maxX = maxY = FLT_MAX;
+    }
+    
+    void SetBounds(float minimumX, float maximumX, float minimumY, float maximumY) {
+        minX = minimumX;
+        maxX = maximumX;
+        minY = minimumY;
+        maxY = maximumY;
+    }
+
+    void Destroy() override {
+        x = y = 0.0f;
+        targetX = targetY = 0.0f;
+        viewportWidth = viewportHeight = 0.0f;
+        targetEntity = 0;
+        minX = minY = -FLT_MAX;
+        maxX = maxY = FLT_MAX;
+    }
+};
+
 // Component initialization functions
 void InitTransform(EntityID entity, float x, float y, float rotation = 0.0f, float scale = 1.0f);
 void InitSprite(EntityID entity, Texture* texture);
@@ -182,6 +227,7 @@ void InitAnimation(EntityID entity, Texture* sheet, int frameW, int frameH, int 
 void InitGravity(EntityID entity, float scale = 1.0f);
 void InitSquirrel(EntityID entity);
 void InitSquirrelPhysics(EntityID entity);
+void InitCamera(EntityID entity, float width, float height, EntityID target = 0);
 
 struct ComponentArrays {
     // Component data pools
@@ -192,6 +238,7 @@ struct ComponentArrays {
     AnimationComponent animations[MAX_ENTITIES];
     GravityComponent gravities[MAX_ENTITIES];
     SquirrelComponent squirrelComponents[MAX_ENTITIES];
+    CameraComponent cameras[MAX_ENTITIES];
 
     // Core functions
     void* GetComponentData(EntityID entity, ComponentType type);
