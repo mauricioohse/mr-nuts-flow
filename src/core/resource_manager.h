@@ -30,6 +30,7 @@ enum TextureID {
     TEXTURE_SQUIRREL_OPEN,
     TEXTURE_SQUIRREL_OPENING,
     TEXTURE_SQUIRREL_CLOSED,
+    TEXTURE_CLOUD_1,
     TEXTURE_MAX
 };
 
@@ -72,6 +73,7 @@ static const TextureResource GAME_TEXTURES[] = {
     {"assets/sprites/squirrel/squirrel_open.png", TEXTURE_SQUIRREL_OPEN},
     {"assets/sprites/squirrel/squirrel_opening.png", TEXTURE_SQUIRREL_OPENING},
     {"assets/sprites/squirrel/squirrel_closed.png", TEXTURE_SQUIRREL_CLOSED},
+    {"assets/sprites/clouds/cloud_1.png", TEXTURE_CLOUD_1},
     // Add new textures here
 };
 

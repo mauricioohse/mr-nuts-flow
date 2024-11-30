@@ -76,6 +76,17 @@ void SquirrelPhysicsSystem::UpdateVelocity(SquirrelComponent* squirrel, float de
     // Apply gravity
     squirrel->velocityY += squirrel->gravity * deltaTime;
     
+    // Handle wiggle state timing and transitions
+    if (squirrel->state == SQUIRREL_STATE_WIGGLING) {
+        squirrel->wiggleTimer += deltaTime;
+        
+        if (squirrel->wiggleTimer >= SQUIRREL_WIGGLE_DURATION) {
+            // Exit wiggle state
+            squirrel->state = SQUIRREL_STATE_OPEN_ARMS;
+            squirrel->wiggleTimer = 0.0f;
+        }
+    } 
+    
     // If velocity direction changed significantly, update rotation
     float newAngle = atan2f(squirrel->velocityY, squirrel->velocityX);
     float oldAngle = atan2f(oldVelY, oldVelX);

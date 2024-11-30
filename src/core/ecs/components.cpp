@@ -17,6 +17,8 @@ void* ComponentArrays::GetComponentData(EntityID entity, ComponentType type) {
         case COMPONENT_GRAVITY:  return &gravities[entity];
         case COMPONENT_SQUIRREL:  return &squirrelComponents[entity];
         case COMPONENT_CAMERA:  return &cameras[entity];
+        case COMPONENT_CLOUD: return &clouds[entity];
+
         default:
             printf("Warning: Unknown component type %u\n", type);
             return nullptr;
@@ -82,4 +84,11 @@ void InitCamera(EntityID entity, float viewportWidth, float viewportHeight, Enti
     }
 }
 
-void InitSquirrelPhysics(EntityID entity);
+void InitCloud(EntityID entity, CloudType cloudType){
+    CloudComponent* cloud = (CloudComponent*) g_Engine.componentArrays.GetComponentData(entity, COMPONENT_CLOUD);
+
+    if (cloud){
+        cloud->Init(cloudType);
+    }
+} 
+

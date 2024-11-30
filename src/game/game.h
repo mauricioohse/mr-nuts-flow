@@ -7,6 +7,7 @@
 #include "../core/ecs/systems/gravity_system.h"
 #include "../core/ecs/systems/squirrel_physics_system.h"
 #include "../core/ecs/systems/camera_system.h"
+#include "../core/ecs/systems/cloud_system.h"
 
 class Game {
 public:
@@ -24,6 +25,7 @@ private:
     GravitySystem gravitySystem;
     SquirrelPhysicsSystem squirrelSystem;
     CameraSystem cameraSystem;
+    CloudSystem cloudSystem;
     
     // Entities
     EntityID squirrelEntity;

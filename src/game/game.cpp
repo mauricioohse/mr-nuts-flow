@@ -8,17 +8,13 @@ Game g_Game;
 bool Game::Init() {
     // Initialize systems
     renderSystem.Init();
-    wasdSystem.Init();
-    collisionSystem.Init();
-    gravitySystem.Init();
     squirrelSystem.Init();
     cameraSystem.Init();
+    cloudSystem.Init();
     g_Engine.systemManager.RegisterSystem(&renderSystem);
-    g_Engine.systemManager.RegisterSystem(&wasdSystem);
-    g_Engine.systemManager.RegisterSystem(&collisionSystem);
-    g_Engine.systemManager.RegisterSystem(&gravitySystem);
     g_Engine.systemManager.RegisterSystem(&squirrelSystem);
     g_Engine.systemManager.RegisterSystem(&cameraSystem);
+    g_Engine.systemManager.RegisterSystem(&cloudSystem);
 
 
     // Create squirrel entity
@@ -34,6 +30,16 @@ bool Game::Init() {
     cameraEntity = g_Engine.entityManager.CreateEntity();
     ADD_TRANSFORM(cameraEntity, 400.0f, 100.0f, 0.0f, 1.0f);
     ADD_CAMERA(cameraEntity, WINDOW_WIDTH, WINDOW_HEIGHT, squirrelEntity);
+
+    EntityID cloud_1 = g_Engine.entityManager.CreateEntity();
+    ADD_TRANSFORM(cloud_1, 600, 600, 0, 1);
+    ADD_SPRITE(cloud_1, ResourceManager::GetTexture(TEXTURE_CLOUD_1));
+    ADD_CLOUD(cloud_1, CLOUD_WHITE);
+
+    EntityID cloud_2 = g_Engine.entityManager.CreateEntity();
+    ADD_TRANSFORM(cloud_2, 200, 600, 0, 1);
+    ADD_SPRITE(cloud_2, ResourceManager::GetTexture(TEXTURE_CLOUD_1));
+    ADD_CLOUD(cloud_2, CLOUD_BLACK);
 
 
     // Store IDs for later use

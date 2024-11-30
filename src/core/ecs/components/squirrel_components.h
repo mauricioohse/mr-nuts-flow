@@ -18,6 +18,8 @@ typedef enum {
 #define SQUIRREL_ROTATION_SPEED 90.0f  // Degrees per second
 #define SQUIRREL_TAP_ROTATION 15.0f     // Degrees per tap
 #define SQUIRREL_SPRITE_ROTATION_OFFSET -90.0f  // Rotate sprite 90 degrees to point feet down
+#define SQUIRREL_WIGGLE_DURATION 1.0f // in seconds
+#define SQUIRREL_GRACE_PERIOD 3.0f // in seconds
 
 struct SquirrelComponent : Component {
     // Gameplay state

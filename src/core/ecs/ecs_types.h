@@ -20,6 +20,7 @@ enum ComponentTypes {
     COMPONENT_GRAVITY = 1 << 5,
     COMPONENT_SQUIRREL = 1 << 6,
     COMPONENT_CAMERA = 1 << 7,
+    COMPONENT_CLOUD = 1 << 8,
     // Add more component types here
 }; 
 
@@ -74,6 +75,13 @@ enum ComponentTypes {
     do { \
         g_Engine.entityManager.AddComponentToEntity(entity, COMPONENT_CAMERA); \
         InitCamera(entity, viewportWidth, viewportHeight, targetEntity); \
+    } while(0)
+
+
+#define ADD_CLOUD(entity, cloudType) \
+    do { \
+        g_Engine.entityManager.AddComponentToEntity(entity, COMPONENT_CLOUD); \
+        InitCloud(entity, cloudType); \
     } while(0)
 
 

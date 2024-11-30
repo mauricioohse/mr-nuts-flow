@@ -6,6 +6,7 @@
 #include "stdio.h"
 #include "base_component.h"
 #include <float.h>
+#include "components/cloud_components.h"
 
 // Add camera constants
 #define CAMERA_FOLLOW_SPEED 5.0f     // How fast camera catches up to target
@@ -228,6 +229,7 @@ void InitGravity(EntityID entity, float scale = 1.0f);
 void InitSquirrel(EntityID entity);
 void InitSquirrelPhysics(EntityID entity);
 void InitCamera(EntityID entity, float width, float height, EntityID target = 0);
+void InitCloud(EntityID entity, CloudType type);
 
 struct ComponentArrays {
     // Component data pools
@@ -239,6 +241,7 @@ struct ComponentArrays {
     GravityComponent gravities[MAX_ENTITIES];
     SquirrelComponent squirrelComponents[MAX_ENTITIES];
     CameraComponent cameras[MAX_ENTITIES];
+    CloudComponent clouds[MAX_ENTITIES];
 
     // Core functions
     void* GetComponentData(EntityID entity, ComponentType type);

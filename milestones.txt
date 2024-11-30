@@ -24,8 +24,8 @@ x  - Implement smooth follow behavior
 x  - Update render system to use camera offset
 
 4. Basic Cloud Setup
-   - Create cloud entities (white and black)
-   - Add basic collision detection
+x  - Create cloud entities (white and black)
+x  - Add basic collision detection
    - Implement simple cloud placement
 
 5. Basic Gameplay Loop
