@@ -24,6 +24,9 @@ public:
     void Cleanup();
     void Reset();
 
+    
+    EntityID squirrelEntity;
+
 private:
     // Systems
     RenderSystem renderSystem;
@@ -36,9 +39,10 @@ private:
     BackgroundSystem backgroundSystem;
     
     // Entities
-    EntityID squirrelEntity;
     EntityID cameraEntity;
     EntityID helicopterEntity;
+    EntityID backgroundEntity;
+    EntityID bottomBackgroundEntity;
     
     // Resources (using IDs instead of pointers)
     SoundID hitSoundID;

@@ -62,6 +62,7 @@ enum TextureID {
     TEXTURE_CLOUD_2,
     TEXTURE_HELICOPTER,
     TEXTURE_BACKGROUND_MIDDLE,
+    TEXTURE_BACKGROUND_BOTTOM,
     TEXTURE_MAX
 };
 
@@ -84,6 +85,7 @@ static const TextureResource GAME_TEXTURES[] = {
     {"assets/sprites/clouds/cloud_2.png", TEXTURE_CLOUD_2},
     {"assets/sprites/helicopter.png", TEXTURE_HELICOPTER},
     {"assets/background/background_middle.png", TEXTURE_BACKGROUND_MIDDLE},
+    {"assets/background/background_bottom.png", TEXTURE_BACKGROUND_BOTTOM},
     // Add new textures here
 };
 

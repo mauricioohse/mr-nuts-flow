@@ -21,11 +21,18 @@ bool Game::Init() {
 
 
     // Create background
-    EntityID backgroundEntity = g_Engine.entityManager.CreateEntity();
+    backgroundEntity = g_Engine.entityManager.CreateEntity();
     Texture* backgroundTexture = ResourceManager::GetTexture(TEXTURE_BACKGROUND_MIDDLE);
     ADD_TRANSFORM(backgroundEntity, 0.0f, 0.0f, 0.0f, 1.0f);
     ADD_SPRITE(backgroundEntity, backgroundTexture);
     ADD_BACKGROUND(backgroundEntity, 0.5f);  // 0.5 parallax factor for medium depth
+
+    // Create bottom background
+    bottomBackgroundEntity = g_Engine.entityManager.CreateEntity();
+    Texture* bottomTexture = ResourceManager::GetTexture(TEXTURE_BACKGROUND_BOTTOM);
+    ADD_TRANSFORM(bottomBackgroundEntity, 800.0f, GAME_HEIGHT - WINDOW_HEIGHT, 0.0f, 1.0f);
+    ADD_SPRITE(bottomBackgroundEntity, bottomTexture);
+    ADD_BACKGROUND(bottomBackgroundEntity, 0.5f);
 
     // Create helicopter entity
     helicopterEntity = g_Engine.entityManager.CreateEntity();
