@@ -1,13 +1,11 @@
 #pragma once
 #include "ecs_types.h"
 #include "../resource_manager.h"
+#include "components/squirrel_components.h"
 #include "string.h"
 #include "stdio.h"
+#include "base_component.h"
 
-// Base component - no Init()
-struct Component {
-    virtual void Destroy() = 0;
-};
 
 struct TransformComponent : Component {
     float x, y;
@@ -173,6 +171,8 @@ void InitCollider(EntityID entity, float width, float height, bool isStatic = fa
 void InitAnimation(EntityID entity, Texture* sheet, int frameW, int frameH, int cols, int frames, 
                    float time = 0.1f, bool shouldLoop = true);
 void InitGravity(EntityID entity, float scale = 1.0f);
+void InitSquirrel(EntityID entity);
+void InitSquirrelPhysics(EntityID entity);
 
 struct ComponentArrays {
     // Component data pools
@@ -182,7 +182,8 @@ struct ComponentArrays {
     ColliderComponent colliders[MAX_ENTITIES];
     AnimationComponent animations[MAX_ENTITIES];
     GravityComponent gravities[MAX_ENTITIES];
-    
+    SquirrelComponent squirrelComponents[MAX_ENTITIES];
+
     // Core functions
     void* GetComponentData(EntityID entity, ComponentType type);
     void RemoveComponent(EntityID entity, ComponentType type);
@@ -190,12 +191,7 @@ struct ComponentArrays {
     // Add this to ComponentArrays struct
     void Init() {
         // Zero out all component arrays
-        memset(transforms, 0, sizeof(transforms));
-        memset(sprites, 0, sizeof(sprites));
-        memset(wasdControllers, 0, sizeof(wasdControllers));
-        memset(colliders, 0, sizeof(colliders));
-        memset(animations, 0, sizeof(animations));
-        memset(gravities, 0, sizeof(gravities));
+        memset(this, 0, sizeof(ComponentArrays));
         
         printf("ComponentArrays initialized\n");
     }

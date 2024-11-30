@@ -68,13 +68,13 @@ void EntityManager::RemoveComponentFromEntity(EntityID entity, ComponentType typ
     }
 }
 
-bool EntityManager::HasComponent(EntityID entity, ComponentType type) {
+bool EntityManager::HasComponent(EntityID entity, ComponentType componentMask) {
     if (!IsEntityValid(entity)) {
         return false;
     }
     
-    // Check if component type exists in entity's mask using bitwise AND
-    return (componentMasks[entity] & type) != 0;
+    // Check if all bits from componentMask are present in entity's mask
+    return (componentMasks[entity] & componentMask) == componentMask;
 }
 
 void EntityManager::Init() {

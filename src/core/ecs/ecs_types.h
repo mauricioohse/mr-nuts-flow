@@ -18,6 +18,7 @@ enum ComponentTypes {
     COMPONENT_COLLIDER = 1 << 3,
     COMPONENT_ANIMATION = 1 << 4,
     COMPONENT_GRAVITY = 1 << 5,
+    COMPONENT_SQUIRREL = 1 << 6,
     // Add more component types here
 }; 
 
@@ -60,5 +61,11 @@ enum ComponentTypes {
         if (gravity) { \
             gravity->Init(scale); \
         } \
+    } while(0)
+
+#define ADD_SQUIRREL(entity) \
+    do { \
+        g_Engine.entityManager.AddComponentToEntity(entity, COMPONENT_SQUIRREL); \
+        InitSquirrel(entity); \
     } while(0)
 

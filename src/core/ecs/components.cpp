@@ -15,6 +15,7 @@ void* ComponentArrays::GetComponentData(EntityID entity, ComponentType type) {
         case COMPONENT_COLLIDER:  return &colliders[entity];
         case COMPONENT_ANIMATION:  return &animations[entity];
         case COMPONENT_GRAVITY:  return &gravities[entity];
+        case COMPONENT_SQUIRREL:  return &squirrelComponents[entity];
         default:
             printf("Warning: Unknown component type %u\n", type);
             return nullptr;
@@ -60,3 +61,15 @@ void InitCollider(EntityID entity, float width, float height, bool isStatic, boo
         collider->Init(width, height, isStatic, isTrigger);
     }
 } 
+
+void InitSquirrel(EntityID entity){
+    SquirrelComponent* squirrel = 
+        (SquirrelComponent*)g_Engine.componentArrays.GetComponentData(entity, COMPONENT_SQUIRREL);
+
+    if (squirrel){
+        squirrel->Init();
+    }
+}
+
+
+void InitSquirrelPhysics(EntityID entity);

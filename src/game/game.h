@@ -5,6 +5,7 @@
 #include "../core/ecs/systems/wasd_controller_system.h"
 #include "../core/ecs/systems/collision_system.h"
 #include "../core/ecs/systems/gravity_system.h"
+#include "../core/ecs/systems/squirrel_physics_system.h"
 
 class Game {
 public:
@@ -20,6 +21,7 @@ private:
     WASDControllerSystem wasdSystem;
     CollisionSystem collisionSystem;
     GravitySystem gravitySystem;
+    SquirrelPhysicsSystem squirrelSystem;
     
     // Entities
     EntityID boxEntity;

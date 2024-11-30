@@ -1,11 +1,11 @@
 # Common variables
 CXX_WINDOWS = g++
 CXX_WEB = emcc
-CXXFLAGS = -Wall
+CXXFLAGS = -Wall -MD -MP
 INCLUDES = -I./include/SDL2 -I./src
 
 # Source files - now includes all cpp files in src and subdirectories
-SOURCES = $(wildcard src/*.cpp) $(wildcard src/core/*.cpp) $(wildcard src/core/ecs/*.cpp) $(wildcard src/core/ecs/systems/*.cpp) $(wildcard src/game/*.cpp)
+SOURCES = $(wildcard src/*.cpp) $(wildcard src/core/*.cpp) $(wildcard src/core/ecs/*.cpp) $(wildcard src/core/ecs/components/*.cpp) $(wildcard src/core/ecs/systems/*.cpp) $(wildcard src/game/*.cpp)
 BUILD_DIR = bin
 WEB_DIR = web
 
@@ -56,6 +56,9 @@ WEB_FLAGS = -O3 -flto \
 $(DEBUG_DIR)/%.o: src/%.cpp
 	@mkdir -p $(dir $@)
 	$(CXX_WINDOWS) $(CXXFLAGS) $(DEBUG_FLAGS) $(INCLUDES) -c $< -o $@
+
+# Include dependency files
+-include $(OBJECTS_DEBUG:.o=.d)
 
 $(DEBUG_TARGET): $(OBJECTS_DEBUG)
 	$(CXX_WINDOWS) $(OBJECTS_DEBUG) $(DEBUG_FLAGS) $(DEBUG_LIBS) -o $(DEBUG_TARGET)
