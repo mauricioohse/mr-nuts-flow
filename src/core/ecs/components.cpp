@@ -18,6 +18,7 @@ void* ComponentArrays::GetComponentData(EntityID entity, ComponentType type) {
         case COMPONENT_SQUIRREL:  return &squirrelComponents[entity];
         case COMPONENT_CAMERA:  return &cameras[entity];
         case COMPONENT_CLOUD: return &clouds[entity];
+        case COMPONENT_BACKGROUND: return &backgrounds[entity];
 
         default:
             printf("Warning: Unknown component type %u\n", type);

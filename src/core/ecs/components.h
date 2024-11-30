@@ -7,6 +7,7 @@
 #include "base_component.h"
 #include <float.h>
 #include "components/cloud_components.h"
+#include "components/background_component.h"
 
 // Add camera constants
 #define CAMERA_FOLLOW_SPEED 5.0f     // How fast camera catches up to target
@@ -237,6 +238,7 @@ struct ComponentArrays {
     SquirrelComponent squirrelComponents[MAX_ENTITIES];
     CameraComponent cameras[MAX_ENTITIES];
     CloudComponent clouds[MAX_ENTITIES];
+    BackgroundComponent backgrounds[MAX_ENTITIES];
 
     // Core functions
     void* GetComponentData(EntityID entity, ComponentType type);

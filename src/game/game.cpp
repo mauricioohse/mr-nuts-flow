@@ -12,17 +12,25 @@ bool Game::Init() {
     squirrelSystem.Init();
     cameraSystem.Init();
     cloudSystem.Init();
+    backgroundSystem.Init();
+    g_Engine.systemManager.RegisterSystem(&backgroundSystem);
     g_Engine.systemManager.RegisterSystem(&renderSystem);
     g_Engine.systemManager.RegisterSystem(&squirrelSystem);
     g_Engine.systemManager.RegisterSystem(&cameraSystem);
-    g_Engine.systemManager.RegisterSystem(&cloudSystem);
+    g_Engine.systemManager.RegisterSystem(&cloudSystem);;
 
 
+    // Create background
+    EntityID backgroundEntity = g_Engine.entityManager.CreateEntity();
+    Texture* backgroundTexture = ResourceManager::GetTexture(TEXTURE_BACKGROUND_MIDDLE);
+    ADD_TRANSFORM(backgroundEntity, 0.0f, 0.0f, 0.0f, 1.0f);
+    ADD_SPRITE(backgroundEntity, backgroundTexture);
+    ADD_BACKGROUND(backgroundEntity, 0.5f);  // 0.5 parallax factor for medium depth
 
     // Create helicopter entity
     helicopterEntity = g_Engine.entityManager.CreateEntity();
     Texture* helicopterTexture = ResourceManager::GetTexture(TEXTURE_HELICOPTER);
-    ADD_TRANSFORM(helicopterEntity, 100.0f, 100.0f, 0.0f, 1.0f);  // Position above squirrel
+    ADD_TRANSFORM(helicopterEntity, 1200.0f, 100.0f, 0.0f, 1.0f);  // Position above squirrel
     ADD_SPRITE(helicopterEntity, helicopterTexture);
 
     // Create squirrel entity
@@ -30,13 +38,13 @@ bool Game::Init() {
     
     Texture* squirrelTexture = ResourceManager::GetTexture(TEXTURE_SQUIRREL_OPEN);    
     // Add basic components
-    ADD_TRANSFORM(squirrelEntity, 400.0f, 100.0f, 0.0f, 1.0f);  // Center-top of screen
+    ADD_TRANSFORM(squirrelEntity, 1200.0f, 100.0f, 0.0f, 1.0f);  // Center-top of screen
     ADD_SQUIRREL(squirrelEntity);
     ADD_SPRITE(squirrelEntity, squirrelTexture);
 
     // create camera
     cameraEntity = g_Engine.entityManager.CreateEntity();
-    ADD_TRANSFORM(cameraEntity, 400.0f, 100.0f, 0.0f, 1.0f);
+    ADD_TRANSFORM(cameraEntity, 1200.0f, 100.0f, 0.0f, 1.0f);
     ADD_CAMERA(cameraEntity, WINDOW_WIDTH, WINDOW_HEIGHT, squirrelEntity);
 
     // Create manual clouds
@@ -69,6 +77,8 @@ bool Game::Init() {
     gameState = GAME_STATE_PLAYING;
     bestTime = 999999.0f;  // Some high number
     isNewRecord = false;
+
+
 
     return true;
 }

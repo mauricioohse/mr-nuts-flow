@@ -21,6 +21,7 @@ enum ComponentTypes {
     COMPONENT_SQUIRREL = 1 << 6,
     COMPONENT_CAMERA = 1 << 7,
     COMPONENT_CLOUD = 1 << 8,
+    COMPONENT_BACKGROUND = 1 << 9,
     // Add more component types here
 }; 
 
@@ -83,5 +84,16 @@ enum ComponentTypes {
         g_Engine.entityManager.AddComponentToEntity(entity, COMPONENT_CLOUD); \
         InitCloud(entity, cloudType); \
     } while(0)
+
+#define ADD_BACKGROUND(entity, parallax) \
+    do { \
+        g_Engine.entityManager.AddComponentToEntity(entity, COMPONENT_BACKGROUND); \
+        BackgroundComponent* background = (BackgroundComponent*)g_Engine.componentArrays.GetComponentData(entity, COMPONENT_BACKGROUND); \
+        if (background) { \
+            background->Init(parallax); \
+        } \
+    } while(0)
+
+
 
 

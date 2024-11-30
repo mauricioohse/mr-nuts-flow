@@ -8,6 +8,7 @@
 #include "../core/ecs/systems/squirrel_physics_system.h"
 #include "../core/ecs/systems/camera_system.h"
 #include "../core/ecs/systems/cloud_system.h"
+#include "../core/ecs/systems/background_system.h"
 
 enum GameState {
     GAME_STATE_PLAYING,
@@ -32,6 +33,7 @@ private:
     SquirrelPhysicsSystem squirrelSystem;
     CameraSystem cameraSystem;
     CloudSystem cloudSystem;
+    BackgroundSystem backgroundSystem;
     
     // Entities
     EntityID squirrelEntity;
