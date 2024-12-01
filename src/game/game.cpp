@@ -29,7 +29,7 @@ bool Game::Init() {
     // Create background
     backgroundEntity = g_Engine.entityManager.CreateEntity();
     Texture* backgroundTexture = ResourceManager::GetTexture(TEXTURE_BACKGROUND_MIDDLE);
-    ADD_TRANSFORM(backgroundEntity, 0.0f, 0.0f, 0.0f, 1.0f);
+    ADD_TRANSFORM(backgroundEntity, -600.0f, 0.0f, 0.0f, 1.0f);
     ADD_SPRITE(backgroundEntity, backgroundTexture);
     ADD_BACKGROUND(backgroundEntity, 0.5f);  // 0.5 parallax factor for medium depth
 
@@ -44,18 +44,18 @@ bool Game::Init() {
     Texture* spriteTex = ResourceManager::GetTexture(TEXTURE_WALL);
     ADD_TRANSFORM(Wall_left, 0, 0, 0.0f, 1.0f);
     ADD_COLLIDER(Wall_left, 50, GAME_HEIGHT, true, false);
-    ADD_SPRITE(Wall_left, spriteTex);
-    SpriteComponent *wall_sprite = &g_Engine.componentArrays.sprites[Wall_left];
-    wall_sprite->width = 32;
-    wall_sprite->height= GAME_HEIGHT;
+    // ADD_SPRITE(Wall_left, spriteTex);
+    // SpriteComponent *wall_sprite = &g_Engine.componentArrays.sprites[Wall_left];
+    // wall_sprite->width = 32;
+    // wall_sprite->height= GAME_HEIGHT;
 
     EntityID Wall_right = g_Engine.entityManager.CreateEntity();
     ADD_TRANSFORM(Wall_right, 2400, 0, 0.0f, 1.0f);
     ADD_COLLIDER(Wall_right, 50, GAME_HEIGHT, true, false);
-    ADD_SPRITE(Wall_right, spriteTex);
-    SpriteComponent *wall_right_sprite = &g_Engine.componentArrays.sprites[Wall_right];
-    wall_right_sprite->width = 32;
-    wall_right_sprite->height= GAME_HEIGHT;
+    // ADD_SPRITE(Wall_right, spriteTex);
+    // SpriteComponent *wall_right_sprite = &g_Engine.componentArrays.sprites[Wall_right];
+    // wall_right_sprite->width = 32;
+    // wall_right_sprite->height= GAME_HEIGHT;
 
     // Create helicopter entity
     helicopterEntity = g_Engine.entityManager.CreateEntity();

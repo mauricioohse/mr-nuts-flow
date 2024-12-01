@@ -27,7 +27,7 @@ void BackgroundSystem::Update(float deltaTime, EntityManager* entities, Componen
             SpriteComponent* sprite = &components->sprites[entity];
             
             // Update X position based on camera with parallax
-            transform->x = -camera->x * background->parallaxFactor;
+            transform->x = -camera->x * background->parallaxFactor - 500;
             
             // Check if this is the bottom background (single image)
             bool isBottomBackground = transform->y >= GAME_HEIGHT - WINDOW_HEIGHT;
