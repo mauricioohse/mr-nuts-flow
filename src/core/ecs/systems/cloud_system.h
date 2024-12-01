@@ -9,4 +9,8 @@ struct CloudSystem : System {
     void Init() override;
     void Update(float deltaTime, EntityManager* entities, ComponentArrays* components) override;
     void Destroy() override;
+
+private:
+    SoundID cloudHitSoundID;
+    SoundID cloudBounceSoundID;
 }; 

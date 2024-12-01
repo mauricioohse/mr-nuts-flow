@@ -26,6 +26,11 @@ struct Sound {
 enum SoundID {
     SOUND_NONE = 0,
     SOUND_HIT,
+    SOUND_BACKGROUND_MUSIC,
+    SOUND_HELICOPTER,
+    SOUND_WIND,
+    SOUND_CLOUD_HIT,
+    SOUND_CLOUD_BOUNCE,
     SOUND_MAX
 };
 
@@ -106,6 +111,11 @@ static const TextureResource GAME_TEXTURES[] = {
 
 static const SoundResource GAME_SOUNDS[] = {
     {"assets/sounds/hit.wav", SOUND_HIT},
+    {"assets/sounds/Going Up.ogg", SOUND_BACKGROUND_MUSIC},
+    {"assets/sounds/helicopter.wav", SOUND_HELICOPTER}, // 49483__lorenzosu__helicopterraw_30sec.wav
+    {"assets/sounds/wind.mp3", SOUND_WIND}, // 420301__tonik-95__wind18.m4a
+    {"assets/sounds/hit.wav", SOUND_CLOUD_HIT},      // Add this
+    {"assets/sounds/Cartoon Boing Sound Effect.mp3", SOUND_CLOUD_BOUNCE}, // https://www.youtube.com/watch?v=F7oMDw2zKog&list=PLM3YufdBArxhztFAvw_d26CsAEJqAK_TB
     // Add new sounds here
 };
 
@@ -150,7 +160,12 @@ struct ResourceManager {
     // New initialization methods
     static bool InitAllResources();
     static void UnloadAllResources();
-    
+
+    // Music playback
+    static void PlayMusic(SoundID id, int loops = -1);
+    static void StopMusic();
+    static void SetMusicVolume(int volume); // 0-128
+
 private:
     // Fixed-size arrays for resources
     static Texture* textures[TEXTURE_MAX];

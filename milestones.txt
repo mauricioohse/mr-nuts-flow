@@ -42,7 +42,7 @@ x  - add peanuts to random object generation in the beginning and reset
 REFINEMENT PHASE
 ---------------
 1. Enhanced States
-   - Add wiggle state implementation
+x  - Add wiggle state implementation
    - Polish state transitions
    - Add visual feedback for state changes
 
@@ -66,6 +66,19 @@ x  - Save best times
 
 5. Audio and Feedback
    - Add sound effects for state changes
+   x Background music (toggleable with M key)
+   x  Helicopter ambient sound (when near)
+      Wind whooshing sound (speed-based intensity)
+      Squirrel State Changes
+         Initial drop from helicopter sound
+         Open arms -> Closed arms transition sound
+         Closed arms -> Open arms transition sound
+      cloud hit (5 variations)
+      power up collection
+      power up ending sound
+      victory sound
+      new record sound
+
    - Add collision sounds
    - Implement background music
    - Add visual feedback for speed

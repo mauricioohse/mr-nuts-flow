@@ -306,3 +306,32 @@ void ResourceManager::UnloadAllResources() {
         UnloadFont((FontID)i);
     }
 }
+
+void ResourceManager::PlayMusic(SoundID id, int loops) {
+    Sound* sound = GetSound(id);
+    if (!sound || !sound->sdlChunk) {
+        printf("Failed to play music: invalid sound ID or not loaded\n");
+        return;
+    }
+
+    // Stop any currently playing music
+    StopMusic();
+
+    // Play the new music
+    if (Mix_PlayChannel(-1, sound->sdlChunk, loops) == -1) {
+        printf("Failed to play music! SDL_mixer Error: %s\n", Mix_GetError());
+    }
+}
+
+void ResourceManager::StopMusic() {
+    // Stop all channels (we could be more specific if needed)
+    Mix_HaltChannel(-1);
+}
+
+void ResourceManager::SetMusicVolume(int volume) {
+    // Clamp volume between 0 and 128 (SDL_mixer's range)
+    if (volume < 0) volume = 0;
+    if (volume > 128) volume = 128;
+    
+    Mix_Volume(-1, volume);  // Set volume for all channels
+}

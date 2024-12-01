@@ -3,6 +3,8 @@
 
 void CloudSystem::Init() {
     printf("CloudSystem initialized\n");
+    cloudHitSoundID = SOUND_CLOUD_HIT;
+    cloudBounceSoundID = SOUND_CLOUD_BOUNCE;
 }
 
 void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArrays* components) {
@@ -52,17 +54,26 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
 
             // Different behavior based on cloud type
             if (cloud->type == CLOUD_WHITE) {
-
-                
                 // Put squirrel in wiggling state regardless of direction
                 squirrel->state = SQUIRREL_STATE_WIGGLING;
                 
-                // Optional: You might want to add some visual feedback
-                // cloudSprite->alpha = 0.5f; // If you have alpha support
+                // Play cloud hit sound
+                Sound* hitSound = ResourceManager::GetSound(cloudHitSoundID);
+                if (hitSound) {
+                    int channel = Mix_PlayChannel(-1, hitSound->sdlChunk, 0);
+                    Mix_Volume(channel, MIX_MAX_VOLUME);  // Set to full volume (128)
+                }
             }
             else if (cloud->type == CLOUD_BLACK) {
                 // Bounce effect
                 squirrel->velocityY = -cloud->bounceForce;
+                
+                // Play bounce sound at higher volume
+                Sound* bounceSound = ResourceManager::GetSound(cloudBounceSoundID);
+                if (bounceSound) {
+                    int channel = Mix_PlayChannel(-1, bounceSound->sdlChunk, 0);
+                    Mix_Volume(channel, MIX_MAX_VOLUME);  // Set to full volume (128)
+                }
             }
         }
     }

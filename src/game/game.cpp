@@ -16,6 +16,7 @@ bool Game::Init() {
     backgroundSystem.Init();
     peanutSystem.Init();
     collisionSystem.Init();
+    musicSystem.Init();
     
     
     g_Engine.systemManager.RegisterSystem(&backgroundSystem);
@@ -25,6 +26,7 @@ bool Game::Init() {
     g_Engine.systemManager.RegisterSystem(&cloudSystem);
     g_Engine.systemManager.RegisterSystem(&peanutSystem);
     g_Engine.systemManager.RegisterSystem(&collisionSystem);
+    g_Engine.systemManager.RegisterSystem(&musicSystem);
 
     // Create background
     backgroundEntity = g_Engine.entityManager.CreateEntity();
