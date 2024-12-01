@@ -11,7 +11,7 @@
 #include "components/peanut_components.h"
 
 // Add camera constants
-#define CAMERA_FOLLOW_SPEED 5.0f     // How fast camera catches up to target
+#define CAMERA_FOLLOW_SPEED 15.0f     // How fast camera catches up to target
 #define CAMERA_DEADZONE_X 100.0f     // Horizontal deadzone before camera starts moving
 #define CAMERA_DEADZONE_Y 100.0f     // Vertical deadzone before camera starts moving
 

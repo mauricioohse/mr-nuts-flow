@@ -22,6 +22,7 @@ typedef enum {
 #define SQUIRREL_WIGGLE_DURATION 1.0f // in seconds
 #define SQUIRREL_GRACE_PERIOD 3.0f // in seconds
 #define SQUIRREL_DROP_DELAY 1.0f  // Time before squirrel starts falling
+#define MOVEMENT_FORCE 1000.0f //
 
 struct SquirrelComponent : Component {
     // Gameplay state
@@ -40,7 +41,7 @@ struct SquirrelComponent : Component {
     float acceleration;     // For closed arms state
     float rotationSpeed;    // For open arms state rotation
 
-    // Powerup properties
+// Powerup properties
     float baseMaxSpeed;        // Store original max speed
     float speedBoost;         // Additional speed from powerups
     bool hasShield;           // Immunity to clouds

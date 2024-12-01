@@ -21,121 +21,81 @@ void SquirrelPhysicsSystem::Update(float deltaTime, EntityManager* entities, Com
 
             // Handle all state-related logic in one place
             HandleSquirrelState(squirrel, sprite, deltaTime);
-            HandleRotationInput(squirrel);
+            HandleMovementInput(squirrel, deltaTime);
 
-            // Handle physics based on current state
-            UpdateVelocity(squirrel, deltaTime);
-            UpdateRotation(squirrel, transform, deltaTime);
-            ApplyMaxSpeed(squirrel);
+            // Apply physics
+            ApplyGravity(squirrel, deltaTime);
+            LimitVerticalSpeed(squirrel);
 
             // Update position
-            if(squirrel->state !=  SQUIRREL_STATE_DROPPING) {
+            if(squirrel->state != SQUIRREL_STATE_DROPPING) {
                 transform->x += squirrel->velocityX * deltaTime;
                 transform->y += squirrel->velocityY * deltaTime;
+            }
+
+            // Keep rotation at zero (except for wiggle state)
+            if (squirrel->state == SQUIRREL_STATE_WIGGLING) {
+                float wiggleAngle = 30.0f * sinf(squirrel->wiggleTimer * 15.0f);
+                transform->rotation = wiggleAngle;
+            } else {
+                transform->rotation = 0;
             }
         }
     }
 }
 
-void SquirrelPhysicsSystem::UpdateRotation(SquirrelComponent* squirrel, TransformComponent* transform, float deltaTime) {
-    // Special rotation handling for wiggle state
+void SquirrelPhysicsSystem::HandleMovementInput(SquirrelComponent* squirrel, float deltaTime) {
+    const float BASE_HORIZONTAL_SPEED = 400.0f;  // Base speed when arms are closed
+    float currentHorizontalSpeed;
+    
+    // Determine horizontal speed based on state
+    switch (squirrel->state) {
+        case SQUIRREL_STATE_OPEN_ARMS:
+            currentHorizontalSpeed = BASE_HORIZONTAL_SPEED * 2.0f;  // Double speed when arms are open
+            break;
+        case SQUIRREL_STATE_CLOSED_ARMS:
+            currentHorizontalSpeed = BASE_HORIZONTAL_SPEED;  // Base speed when arms are closed
+            break;
+        case SQUIRREL_STATE_WIGGLING:
+            currentHorizontalSpeed = 0.0f;  // No movement during wiggle
+            break;
+        default:
+            currentHorizontalSpeed = BASE_HORIZONTAL_SPEED;  // Default to base speed
+            break;
+    }
+    
+    // Reset horizontal velocity each frame (for crisp movement)
+    squirrel->velocityX = 0;
+
+    // Don't allow movement during wiggle state
     if (squirrel->state == SQUIRREL_STATE_WIGGLING) {
-        // Create a sine wave motion for wiggling
-        float wiggleAngle = 30.0f * sinf(squirrel->wiggleTimer * 15.0f) + 90; // 30 degree amplitude, 15 rad/s frequency
-        transform->rotation = wiggleAngle + SQUIRREL_SPRITE_ROTATION_OFFSET;
         return;
     }
 
-    // Calculate current velocity angle
-    float velocityAngle = atan2f(squirrel->velocityY, squirrel->velocityX) * 180.0f / M_PI;
+    // Move left
+    if (Input::IsKeyDown(SDL_SCANCODE_A) || Input::IsKeyDown(SDL_SCANCODE_LEFT)) {
+        squirrel->velocityX = -currentHorizontalSpeed;
+    }
     
-    // Smoothly interpolate current rotation to match velocity direction
-    float angleDiff = velocityAngle - squirrel->rotation;
-    
-    // Normalize angle difference to [-180, 180]
-    while (angleDiff > 180.0f) angleDiff -= 360.0f;
-    while (angleDiff < -180.0f) angleDiff += 360.0f;
-    
-    // Smoothly rotate towards velocity direction
-    squirrel->rotation += angleDiff * deltaTime * SQUIRREL_ROTATION_SPEED;
-    
-    // Normalize final rotation
-    while (squirrel->rotation > 180.0f) squirrel->rotation -= 360.0f;
-    while (squirrel->rotation < -180.0f) squirrel->rotation += 360.0f;
-    
-    // Update transform rotation
-    transform->rotation = squirrel->rotation + SQUIRREL_SPRITE_ROTATION_OFFSET;
+    // Move right
+    if (Input::IsKeyDown(SDL_SCANCODE_D) || Input::IsKeyDown(SDL_SCANCODE_RIGHT)) {
+        squirrel->velocityX = currentHorizontalSpeed;
+    }
 }
 
-void SquirrelPhysicsSystem::UpdateVelocity(SquirrelComponent* squirrel, float deltaTime) {
-    // Store old velocity for rotation calculation
-    float oldVelX = squirrel->velocityX;
-    float oldVelY = squirrel->velocityY;
-    
-    // Apply gravity
+void SquirrelPhysicsSystem::ApplyGravity(SquirrelComponent* squirrel, float deltaTime) {
     squirrel->velocityY += squirrel->gravity * deltaTime;
-    
-    
-    // If velocity direction changed significantly, update rotation
-    float newAngle = atan2f(squirrel->velocityY, squirrel->velocityX);
-    float oldAngle = atan2f(oldVelY, oldVelX);
-    if (fabsf(newAngle - oldAngle) > 0.1f) {  // ~5.7 degrees threshold
-        squirrel->targetRotation = newAngle * 180.0f / M_PI;
-    }
-
 }
 
-void SquirrelPhysicsSystem::ApplyMaxSpeed(SquirrelComponent* squirrel) {
-    
-    float currentSpeed = sqrtf(squirrel->velocityX * squirrel->velocityX + 
-                             squirrel->velocityY * squirrel->velocityY);
-
-    if (currentSpeed > squirrel->maxSpeed) {
-        // Calculate deceleration factor
-        float scale = squirrel->maxSpeed / currentSpeed;
-        
-        // Apply smooth deceleration
-        squirrel->velocityX *= scale;
-        squirrel->velocityY *= scale;
-    }
-} 
-
-void SquirrelPhysicsSystem::Destroy(){}
-
-void SquirrelPhysicsSystem::HandleRotationInput(SquirrelComponent* squirrel) {
-    // Only handle rotation input in OPEN_ARMS state
-    if (squirrel->state == SQUIRREL_STATE_WIGGLING ) {
-        return;
-    }
-
-    // Check for left rotation (A or Left Arrow)
-    if (Input::IsKeyPressed(SDL_SCANCODE_A) || Input::IsKeyPressed(SDL_SCANCODE_LEFT)) {
-        squirrel->targetRotation -= SQUIRREL_TAP_ROTATION;
-        
-        // Rotate velocity vector
-        float angle = -SQUIRREL_TAP_ROTATION * M_PI / 180.0f;
-        float cosAngle = cosf(angle);
-        float sinAngle = sinf(angle);
-        float newVelX = squirrel->velocityX * cosAngle - squirrel->velocityY * sinAngle;
-        float newVelY = squirrel->velocityX * sinAngle + squirrel->velocityY * cosAngle;
-        squirrel->velocityX = newVelX;
-        squirrel->velocityY = newVelY;
-    }
-    
-    // Check for right rotation (D or Right Arrow)
-    if (Input::IsKeyPressed(SDL_SCANCODE_D) || Input::IsKeyPressed(SDL_SCANCODE_RIGHT)) {
-        squirrel->targetRotation += SQUIRREL_TAP_ROTATION;
-        
-        // Rotate velocity vector
-        float angle = SQUIRREL_TAP_ROTATION * M_PI / 180.0f;
-        float cosAngle = cosf(angle);
-        float sinAngle = sinf(angle);
-        float newVelX = squirrel->velocityX * cosAngle - squirrel->velocityY * sinAngle;
-        float newVelY = squirrel->velocityX * sinAngle + squirrel->velocityY * cosAngle;
-        squirrel->velocityX = newVelX;
-        squirrel->velocityY = newVelY;
+void SquirrelPhysicsSystem::LimitVerticalSpeed(SquirrelComponent* squirrel) {
+    // Only limit vertical speed using maxSpeed
+    if (fabsf(squirrel->velocityY) > squirrel->maxSpeed) {
+        float sign = squirrel->velocityY > 0 ? 1.0f : -1.0f;
+        squirrel->velocityY = sign * squirrel->maxSpeed;
     }
 }
+
+void SquirrelPhysicsSystem::Destroy() {}
 
 void SquirrelPhysicsSystem::HandleSquirrelState(SquirrelComponent* squirrel, 
                                                SpriteComponent* sprite, 
