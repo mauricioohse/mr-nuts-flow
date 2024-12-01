@@ -1,5 +1,6 @@
 #include "camera_system.h"
 #include <stdio.h>
+#include <algorithm>
 
 void CameraSystem::Init() {
     printf("CameraSystem initialized\n");
@@ -25,6 +26,9 @@ void CameraSystem::Update(float deltaTime, EntityManager* entities, ComponentArr
             // Smooth follow
             camera->x += (camera->targetX - camera->x) * CAMERA_FOLLOW_SPEED * deltaTime;
             camera->y += (camera->targetY - camera->y) * CAMERA_FOLLOW_SPEED * deltaTime;
+
+            // clamp at the bottom
+            camera->y = std::min((float)GAME_HEIGHT- 200, camera->y);
 
         }
     }

@@ -78,3 +78,21 @@ void GenerateRandomPeanuts(float spawnThreshold) {
         currentHeight += MIN_PEANUT_SPACING;
     }
 } 
+
+void MakeAllPeanutsVisibleAgain() {
+    // Iterate through all entities
+    for (EntityID entity = 1; entity < MAX_ENTITIES; entity++) {
+        // Check if entity has peanut and sprite components
+        if (g_Engine.entityManager.HasComponent(entity, COMPONENT_PEANUT | COMPONENT_SPRITE)) {
+            // Get components
+            PeanutComponent* peanut = &g_Engine.componentArrays.peanuts[entity];
+            SpriteComponent* sprite = &g_Engine.componentArrays.sprites[entity];
+            
+            // Reset peanut state
+            peanut->wasCollected = false;
+            sprite->isVisible = true;
+            
+            printf("Reset peanut entity %d\n", entity);
+        }
+    }
+}

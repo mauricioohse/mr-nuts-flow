@@ -15,6 +15,8 @@ bool Game::Init() {
     cloudSystem.Init();
     backgroundSystem.Init();
     peanutSystem.Init();
+    collisionSystem.Init();
+    
     
     g_Engine.systemManager.RegisterSystem(&backgroundSystem);
     g_Engine.systemManager.RegisterSystem(&renderSystem);
@@ -22,6 +24,7 @@ bool Game::Init() {
     g_Engine.systemManager.RegisterSystem(&cameraSystem);
     g_Engine.systemManager.RegisterSystem(&cloudSystem);
     g_Engine.systemManager.RegisterSystem(&peanutSystem);
+    g_Engine.systemManager.RegisterSystem(&collisionSystem);
 
     // Create background
     backgroundEntity = g_Engine.entityManager.CreateEntity();
@@ -33,9 +36,26 @@ bool Game::Init() {
     // Create bottom background
     bottomBackgroundEntity = g_Engine.entityManager.CreateEntity();
     Texture* bottomTexture = ResourceManager::GetTexture(TEXTURE_BACKGROUND_BOTTOM);
-    ADD_TRANSFORM(bottomBackgroundEntity, 800.0f, GAME_HEIGHT - WINDOW_HEIGHT, 0.0f, 1.0f);
+    ADD_TRANSFORM(bottomBackgroundEntity, 800.0f, GAME_HEIGHT , 0.0f, 1.0f);
     ADD_SPRITE(bottomBackgroundEntity, bottomTexture);
     ADD_BACKGROUND(bottomBackgroundEntity, 0.5f);
+
+    EntityID Wall_left = g_Engine.entityManager.CreateEntity();
+    Texture* spriteTex = ResourceManager::GetTexture(TEXTURE_WALL);
+    ADD_TRANSFORM(Wall_left, 0, 0, 0.0f, 1.0f);
+    ADD_COLLIDER(Wall_left, 50, GAME_HEIGHT, true, false);
+    ADD_SPRITE(Wall_left, spriteTex);
+    SpriteComponent *wall_sprite = &g_Engine.componentArrays.sprites[Wall_left];
+    wall_sprite->width = 32;
+    wall_sprite->height= GAME_HEIGHT;
+
+    EntityID Wall_right = g_Engine.entityManager.CreateEntity();
+    ADD_TRANSFORM(Wall_right, 2400, 0, 0.0f, 1.0f);
+    ADD_COLLIDER(Wall_right, 50, GAME_HEIGHT, true, false);
+    ADD_SPRITE(Wall_right, spriteTex);
+    SpriteComponent *wall_right_sprite = &g_Engine.componentArrays.sprites[Wall_right];
+    wall_right_sprite->width = 32;
+    wall_right_sprite->height= GAME_HEIGHT;
 
     // Create helicopter entity
     helicopterEntity = g_Engine.entityManager.CreateEntity();
@@ -51,6 +71,7 @@ bool Game::Init() {
     ADD_TRANSFORM(squirrelEntity, 1200.0f, 100.0f, 0.0f, 1.0f);  // Center-top of screen
     ADD_SQUIRREL(squirrelEntity);
     ADD_SPRITE(squirrelEntity, squirrelTexture);
+    ADD_COLLIDER(squirrelEntity, 32, 32, 0, 0);
 
     // create camera
     cameraEntity = g_Engine.entityManager.CreateEntity();
@@ -65,7 +86,6 @@ bool Game::Init() {
     float cloudSpawnThreshold = 500; 
     GenerateRandomClouds(cloudSpawnThreshold);
 
-    // Remove the test peanuts code and replace with random generation
     GenerateRandomPeanuts(500.0f);  // Use same threshold as clouds
 
     // Store IDs for later use
@@ -128,7 +148,7 @@ void Game::Update(float deltaTime) {
             (TransformComponent *)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
 
         // Check if squirrel reached bottom
-        if (squirrelTransform->y >= GAME_HEIGHT - 200) {  // Leave some margin at bottom
+        if (squirrelTransform->y >= GAME_HEIGHT + 300) {  // Leave some margin at bottom
             gameState = GAME_STATE_FINISHED;
             
             // Check if this is a new record
@@ -158,11 +178,13 @@ void Game::Render() {
     char timerText[32];
     char heightText[32];
     char speedText[32];
+    char posText[32];
     snprintf(fpsText, sizeof(fpsText), "FPS: %.1f", 1.0f / g_Engine.deltaTime);
     snprintf(timerText, sizeof(timerText), "Time: %.2f", gameTimer);
     snprintf(heightText, sizeof(heightText), "Height: %.0f", remainingHeight);
     snprintf(speedText, sizeof(speedText), "Max speed: %.0f", squirrel->maxSpeed);
-    
+    snprintf(posText, sizeof(posText), "Pos: %.0f, %.0f", squirrelTransform->x, squirrelTransform->y);
+
     SDL_Color textColor = {255, 255, 255, 255};  // White color
     Font* fpsFont = ResourceManager::GetFont(fpsFontID);
     if (fpsFont) {
@@ -178,6 +200,9 @@ void Game::Render() {
         // Render speed below height
         ResourceManager::RenderTextAlignedTopRight(fpsFont, speedText, textColor, 
             g_Engine.window->width - 10, 70);
+        // Render position below speed
+        ResourceManager::RenderTextAlignedTopRight(fpsFont, posText, textColor, 
+            g_Engine.window->width - 10, 90);
         
         // If game is finished, show completion message
         if (gameState == GAME_STATE_FINISHED) {
@@ -226,6 +251,7 @@ void Game::Reset() {
     SquirrelComponent* squirrel = 
         (SquirrelComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_SQUIRREL);
         
+    
     // Position squirrel below helicopter
     squirrelTransform->x = heliTransform->x;
     squirrelTransform->y = heliTransform->y + 30;
@@ -235,4 +261,10 @@ void Game::Reset() {
     squirrel->velocityX = 0;
     squirrel->velocityY = 0;
     squirrel->rotation = 0;
+    
+    // Reset all peanuts
+    MakeAllPeanutsVisibleAgain();
+
+    // resets squirrel stats
+    squirrel->Init();
 }

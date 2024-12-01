@@ -11,6 +11,7 @@ struct PeanutInitData {
 // Function declarations
 void CreatePeanutsFromData(const PeanutInitData* peanutList, int count);
 void GenerateRandomPeanuts(float spawnThreshold);
+void MakeAllPeanutsVisibleAgain();
 
 // Constants for peanut generation
 #define MIN_PEANUT_SPACING 300.0f      // Minimum vertical space between peanuts
