@@ -4,6 +4,7 @@
 #include "../core/input.h"
 #include "cloud_init.h"
 #include "peanut_init.h"
+#include <math.h>
 
 Game g_Game;
 
@@ -114,6 +115,12 @@ bool Game::Init() {
     bestTime = 999999.0f;  // Some high number
     isNewRecord = false;
 
+    // Create arrow entity
+    arrowEntity = g_Engine.entityManager.CreateEntity();
+    Texture* arrowTexture = ResourceManager::GetTexture(TEXTURE_ARROW);
+    ADD_TRANSFORM(arrowEntity, 0.0f, 0.0f, 0.0f, 1.0f);
+    ADD_SPRITE(arrowEntity, arrowTexture);
+
     return true;
 }
 
@@ -160,6 +167,8 @@ void Game::Update(float deltaTime) {
             }
         }
     }
+
+    UpdateArrowDirection();
 }
 
 void Game::Render() {
@@ -274,4 +283,47 @@ void Game::Reset() {
 
     // resets squirrel stats
     squirrel->Init();
+}
+
+void Game::UpdateArrowDirection() {
+    TransformComponent* squirrelTransform = 
+        (TransformComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
+    TransformComponent* arrowTransform = 
+        (TransformComponent*)g_Engine.componentArrays.GetComponentData(arrowEntity, COMPONENT_TRANSFORM);
+    
+    // Find closest uncollected peanut below squirrel
+    float closestDist = FLT_MAX;
+    int closestIndex = -1;
+    
+    for (int i = 0; i < numPeanutTargets; i++) {
+        if (!peanutTargets[i].isCollected && peanutTargets[i].y > squirrelTransform->y) {
+            float dx = peanutTargets[i].x - squirrelTransform->x;
+            float dy = peanutTargets[i].y - squirrelTransform->y;
+            float dist = dx * dx + dy * dy;
+            
+            if (dist < closestDist) {
+                closestDist = dist;
+                closestIndex = i;
+            }
+        }
+    }
+    
+    // Update arrow position and rotation
+    if (closestIndex != -1) {
+        // Position arrow at squirrel center
+        arrowTransform->x = squirrelTransform->x;  // Assuming 32x32 squirrel
+        arrowTransform->y = squirrelTransform->y;
+        
+        // Calculate angle to target
+        float dx = peanutTargets[closestIndex].x - squirrelTransform->x;
+        float dy = peanutTargets[closestIndex].y - squirrelTransform->y;
+        float angle = atan2f(dy, dx) * (180.0f / M_PI);
+        
+        arrowTransform->rotation = angle;
+        
+        // Make arrow visible
+        SpriteComponent* arrowSprite = 
+            (SpriteComponent*)g_Engine.componentArrays.GetComponentData(arrowEntity, COMPONENT_SPRITE);
+        arrowSprite->isVisible = true;
+    }
 }

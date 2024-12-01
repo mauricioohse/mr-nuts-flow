@@ -88,6 +88,15 @@ void PeanutSystem::Update(float deltaTime, EntityManager* entities, ComponentArr
                 }
                 
                 printf("peanut type %d collected\n", peanut->type);
+
+                // Update target array
+                for (int i = 0; i < g_Game.numPeanutTargets; i++) {
+                    if (abs(g_Game.peanutTargets[i].x - peanutTransform->x) < 1.0f &&
+                        abs(g_Game.peanutTargets[i].y - peanutTransform->y) < 1.0f) {
+                        g_Game.peanutTargets[i].isCollected = true;
+                        break;
+                    }
+                }
             }
         }
     }

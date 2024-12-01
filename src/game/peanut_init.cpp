@@ -3,6 +3,7 @@
 #include "../core/resource_manager.h"
 #include <stdlib.h>
 #include <time.h>
+#include "game.h"
 
 void CreatePeanutsFromData(const PeanutInitData* peanutList, int count) {
     for (int i = 0; i < count; i++) {
@@ -29,7 +30,8 @@ void CreatePeanutsFromData(const PeanutInitData* peanutList, int count) {
 }
 
 void GenerateRandomPeanuts(float spawnThreshold) {
-    float currentHeight = spawnThreshold;  // Start a bit below the helicopter
+    g_Game.numPeanutTargets = 0;
+    float currentHeight = spawnThreshold;
     
     while (currentHeight < GAME_HEIGHT - spawnThreshold) {  // Stop before bottom
         // Decide if we spawn a peanut at this height
@@ -39,6 +41,13 @@ void GenerateRandomPeanuts(float spawnThreshold) {
             // Random x position within reasonable bounds
             float x = 800.0f + (float)(rand() % 800);  // Between 800 and 1600
             
+            if (g_Game.numPeanutTargets < Game::MAX_PEANUT_TARGETS) {
+                g_Game.peanutTargets[g_Game.numPeanutTargets].x = x;
+                g_Game.peanutTargets[g_Game.numPeanutTargets].y = currentHeight;
+                g_Game.peanutTargets[g_Game.numPeanutTargets].isCollected = false;
+                g_Game.numPeanutTargets++;
+            }
+
             // Determine peanut type
             PeanutType type;
             float typeRoll = (float)rand() / RAND_MAX;

@@ -75,6 +75,7 @@ enum TextureID {
     TEXTURE_WHITE_CLOUDE_SMALL,
     TEXTURE_WHITE_CLOUDE_MEDIUM,
     TEXTURE_WHITE_CLOUDE_LARGE,
+    TEXTURE_ARROW,
     TEXTURE_MAX
 };
 
@@ -104,6 +105,7 @@ static const TextureResource GAME_TEXTURES[] = {
     {"assets/sprites/clouds/cloud_white_small.png", TEXTURE_WHITE_CLOUDE_SMALL},
     {"assets/sprites/clouds/cloud_white_medium.png", TEXTURE_WHITE_CLOUDE_MEDIUM},
     {"assets/sprites/clouds/cloud_white_large.png", TEXTURE_WHITE_CLOUDE_LARGE},
+    {"assets/sprites/arrow.png", TEXTURE_ARROW},
     // Add new textures here
 };
 

@@ -17,6 +17,12 @@ enum GameState {
     GAME_STATE_FINISHED
 };
 
+struct PeanutTarget {
+    float x;
+    float y;
+    bool isCollected;
+};
+
 class Game {
 public:
     bool Init();
@@ -26,10 +32,19 @@ public:
     void Cleanup();
     void Reset();
 
+    void UpdatePeanutTargets();  // Call this when peanuts are collected
+    void UpdateArrowDirection();  // Call this each frame
+
     
     EntityID squirrelEntity;
     EntityID helicopterEntity;
     EntityID cameraEntity;
+
+    static const int MAX_PEANUT_TARGETS = 100;
+    PeanutTarget peanutTargets[MAX_PEANUT_TARGETS];
+    int numPeanutTargets;
+    EntityID arrowEntity;  // To track the arrow sprite
+
 
 private:
     // Systems
@@ -56,6 +71,8 @@ private:
     GameState gameState;
     bool isNewRecord;  // To track if current time is best time
     float bestTime;    // Store best completion time
+
+    
 };
 
 extern Game g_Game;  // Global game instance 
