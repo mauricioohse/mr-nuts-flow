@@ -17,7 +17,7 @@ struct PeanutComponent : Component {
     bool wasCollected;
 
     void Init(PeanutType peanutType) {
-        printf("PeanutComponent::Init() called\n");
+        // printf("PeanutComponent::Init() called\n");
         type = peanutType;
         wasCollected = false;
     }

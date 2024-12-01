@@ -32,8 +32,8 @@ bool Engine::Init() {
         return false;
     }
 
-    // Set initial volume (optional)
-    Mix_Volume(-1, MIX_MAX_VOLUME / 2);  // Set to 50% volume
+    // // Set initial volume (optional)
+    Mix_Volume(-1, 32);  // Set to 50% volume
 
     // Create window
     g_Engine.window = new Window();

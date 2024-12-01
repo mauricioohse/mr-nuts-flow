@@ -318,12 +318,12 @@ void ResourceManager::PlayMusic(SoundID id, int loops) {
     StopMusic();
 
     // Play the new music
+    sound->sdlChunk->volume = 16;
     int channel =  Mix_PlayChannel(-1, sound->sdlChunk, loops);
     if (channel == -1) {
         printf("Failed to play music! SDL_mixer Error: %s\n", Mix_GetError());
     }
 
-    Mix_Volume(channel, 12);  
 }
 
 void ResourceManager::StopMusic() {
@@ -331,10 +331,4 @@ void ResourceManager::StopMusic() {
     Mix_HaltChannel(-1);
 }
 
-void ResourceManager::SetMusicVolume(int volume) {
-    // Clamp volume between 0 and 128 (SDL_mixer's range)
-    if (volume < 0) volume = 0;
-    if (volume > 128) volume = 128;
-    
-    Mix_Volume(-1, volume);  // Set volume for all channels
-}
+

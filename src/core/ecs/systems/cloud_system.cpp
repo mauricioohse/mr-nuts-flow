@@ -70,8 +70,8 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
                 // Play cloud hit sound
                 Sound* hitSound = ResourceManager::GetSound(cloudHitSoundID);
                 if (hitSound) {
-                    int channel = Mix_PlayChannel(-1, hitSound->sdlChunk, 0);
-                    Mix_Volume(channel, 16);  // Set to lower volume
+                    hitSound->sdlChunk->volume = 32;  // Quarter volume (0-128)
+                    Mix_PlayChannel(-1, hitSound->sdlChunk, 0);
                 }
             }
             else if (cloud->type == CLOUD_BLACK) {
@@ -82,8 +82,8 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
                 if (hitSoundCooldown <= 0.0f) {
                     Sound* cloudSound = ResourceManager::GetSound(cloudBounceSoundID);
                     if (cloudSound) {
-                        int channel = Mix_PlayChannel(-1, cloudSound->sdlChunk, 0);
-                        Mix_Volume(channel, 16);  // Set to lower volume
+                        cloudSound->sdlChunk->volume = 32;  // Quarter volume (0-128)
+                        Mix_PlayChannel(-1, cloudSound->sdlChunk, 0);
                         hitSoundCooldown = HIT_SOUND_COOLDOWN_TIME;  // Reset cooldown
                     }
                 }

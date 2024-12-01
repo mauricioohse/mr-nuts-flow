@@ -83,8 +83,8 @@ void PeanutSystem::Update(float deltaTime, EntityManager* entities, ComponentArr
                 // Play chomp sound
                 Sound* chompSound = ResourceManager::GetSound(SOUND_CHOMP);
                 if (chompSound) {
-                    int channel = Mix_PlayChannel(-1, chompSound->sdlChunk, 0);
-                    Mix_Volume(channel, 128);  // Set to lower volume
+                    chompSound->sdlChunk->volume = 64;  // Half volume (0-128)
+                    Mix_PlayChannel(-1, chompSound->sdlChunk, 0);
                 }
                 
                 printf("peanut type %d collected\n", peanut->type);

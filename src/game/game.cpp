@@ -156,6 +156,8 @@ void Game::Update(float deltaTime) {
         TransformComponent *squirrelTransform =
             (TransformComponent *)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
 
+        static bool playVictoryOnce = false;
+
         // Check if squirrel reached bottom
         if (squirrelTransform->y >= GAME_HEIGHT + 400) {  // Leave some margin at bottom
             gameState = GAME_STATE_FINISHED;
@@ -165,6 +167,17 @@ void Game::Update(float deltaTime) {
                 bestTime = gameTimer;
                 isNewRecord = true;
             }
+
+            if (!playVictoryOnce) {
+                Sound* victorySound = ResourceManager::GetSound(SOUND_VICTORY);
+                if (victorySound) {
+                    Mix_PlayChannel(-1, victorySound->sdlChunk, 0);
+                }
+                playVictoryOnce = true;
+            }
+
+        } else {
+            playVictoryOnce = false;
         }
     }
 
@@ -185,9 +198,7 @@ void Game::Render() {
         SDL_Color textColor = {255, 255, 255, 255};  // White color
         
         const char* instructions[] = {
-            "Help Mr Nuts reach his family on the island below!",
-            "W/Space/Up arrow to drop and to open the wings",
-            "A/D or Left/Right to glide horizontally",
+            "WASD  or Left/right/Up to move!",
             "Collect Peanuts to increase speed!",
             "R to reset!"
         };
@@ -197,7 +208,7 @@ void Game::Render() {
         const int START_Y = 200;      
         
         if (font) {
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 3; i++) {
                 ResourceManager::RenderTextAlignedTopRight(font, instructions[i], textColor, 
                     START_X + 500, START_Y + i * LINE_SPACING);
             }

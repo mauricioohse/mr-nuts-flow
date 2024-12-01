@@ -78,10 +78,10 @@ void GenerateRandomPeanuts(float spawnThreshold) {
             ADD_SPRITE(peanut, texture);
             ADD_PEANUT(peanut, type);
             
-            printf("Generated %s peanut at (%.1f, %.1f)\n", 
-                type == PEANUT_TYPE_SUPER ? "super" : 
-                type == PEANUT_TYPE_SHIELD ? "shield" : "regular",
-                x, currentHeight);
+            // printf("Generated %s peanut at (%.1f, %.1f)\n", 
+            //     type == PEANUT_TYPE_SUPER ? "super" : 
+            //     type == PEANUT_TYPE_SHIELD ? "shield" : "regular",
+            //     x, currentHeight);
         }
         
         currentHeight += MIN_PEANUT_SPACING;

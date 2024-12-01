@@ -60,12 +60,11 @@ void MusicSystem::UpdateHelicopterSound(EntityID helicopterEntity, EntityID squi
         if (!isHelicopterPlaying) {
             Sound* heliSound = ResourceManager::GetSound(helicopterSoundID);
             if (heliSound) {
+                heliSound->sdlChunk->volume = volume;
                 helicopterChannel = Mix_PlayChannel(-1, heliSound->sdlChunk, -1);  // Loop infinitely
                 isHelicopterPlaying = true;
             }
         }
-        // Update volume
-        Mix_Volume(helicopterChannel, volume);
     } else if (isHelicopterPlaying) {
         // Stop helicopter sound when too far
         Mix_HaltChannel(helicopterChannel);
@@ -88,7 +87,7 @@ void MusicSystem::UpdateWindSound(EntityID squirrelEntity) {
         float speedRatio = (totalSpeed - MIN_SPEED_FOR_WIND) / 
                           (MAX_SPEED_FOR_WIND - MIN_SPEED_FOR_WIND);
         speedRatio = std::min(1.0f, speedRatio);  // Clamp to 1.0
-        volume = (int)(speedRatio * 128 / 2);  // Divide by 2 to keep wind quieter
+        volume = (int)(speedRatio * 128 / 16);  // Divide by 2 to keep wind quieter
     }
 
     // Start or update wind sound
@@ -96,11 +95,11 @@ void MusicSystem::UpdateWindSound(EntityID squirrelEntity) {
         if (!isWindPlaying) {
             Sound* windSound = ResourceManager::GetSound(windSoundID);
             if (windSound) {
+                windSound->sdlChunk->volume = volume;
                 windChannel = Mix_PlayChannel(-1, windSound->sdlChunk, -1);  // Loop infinitely
                 isWindPlaying = true;
             }
         }
-        Mix_Volume(windChannel, volume);
     } else if (isWindPlaying) {
         Mix_HaltChannel(windChannel);
         isWindPlaying = false;
