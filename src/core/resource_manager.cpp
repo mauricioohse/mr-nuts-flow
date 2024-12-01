@@ -318,9 +318,12 @@ void ResourceManager::PlayMusic(SoundID id, int loops) {
     StopMusic();
 
     // Play the new music
-    if (Mix_PlayChannel(-1, sound->sdlChunk, loops) == -1) {
+    int channel =  Mix_PlayChannel(-1, sound->sdlChunk, loops);
+    if (channel == -1) {
         printf("Failed to play music! SDL_mixer Error: %s\n", Mix_GetError());
     }
+
+    Mix_Volume(channel, 12);  
 }
 
 void ResourceManager::StopMusic() {

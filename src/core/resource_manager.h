@@ -111,7 +111,7 @@ static const TextureResource GAME_TEXTURES[] = {
 
 static const SoundResource GAME_SOUNDS[] = {
     {"assets/sounds/hit.wav", SOUND_HIT},
-    {"assets/sounds/Going Up.ogg", SOUND_BACKGROUND_MUSIC},
+    {"assets/sounds/music.mp3", SOUND_BACKGROUND_MUSIC},
     {"assets/sounds/helicopter.wav", SOUND_HELICOPTER}, // 49483__lorenzosu__helicopterraw_30sec.wav
     {"assets/sounds/wind.mp3", SOUND_WIND}, // 420301__tonik-95__wind18.m4a
     {"assets/sounds/hit.wav", SOUND_CLOUD_HIT},      // Add this

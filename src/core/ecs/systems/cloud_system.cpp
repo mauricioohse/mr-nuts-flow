@@ -53,9 +53,9 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
         if (squirrelRight > cloudLeft && squirrelLeft < cloudRight &&
             squirrelBottom > cloudTop && squirrelTop < cloudBottom) {
 
-            printf("Squirrel: (%.1f,%.1f)-(%.1f,%.1f) Cloud: (%.1f,%.1f)-(%.1f,%.1f)\n",
-                squirrelLeft, squirrelTop, squirrelRight, squirrelBottom,
-                cloudLeft, cloudTop, cloudRight, cloudBottom);
+            // printf("Squirrel: (%.1f,%.1f)-(%.1f,%.1f) Cloud: (%.1f,%.1f)-(%.1f,%.1f)\n",
+            //     squirrelLeft, squirrelTop, squirrelRight, squirrelBottom,
+            //     cloudLeft, cloudTop, cloudRight, cloudBottom);
 
             if (squirrel->hasShield) {
                 printf("protected from cloud!\n");
@@ -71,7 +71,7 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
                 Sound* hitSound = ResourceManager::GetSound(cloudHitSoundID);
                 if (hitSound) {
                     int channel = Mix_PlayChannel(-1, hitSound->sdlChunk, 0);
-                    Mix_Volume(channel, MIX_MAX_VOLUME/2);  // Set to full volume (128)
+                    Mix_Volume(channel, 16);  // Set to lower volume
                 }
             }
             else if (cloud->type == CLOUD_BLACK) {
@@ -83,7 +83,7 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
                     Sound* cloudSound = ResourceManager::GetSound(cloudBounceSoundID);
                     if (cloudSound) {
                         int channel = Mix_PlayChannel(-1, cloudSound->sdlChunk, 0);
-                        Mix_Volume(channel, MIX_MAX_VOLUME/2);
+                        Mix_Volume(channel, 16);  // Set to lower volume
                         hitSoundCooldown = HIT_SOUND_COOLDOWN_TIME;  // Reset cooldown
                     }
                 }
