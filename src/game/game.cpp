@@ -188,7 +188,8 @@ void Game::Render() {
             "Help Mr Nuts reach his family on the island below!",
             "W/Space/Up arrow to drop and to open the wings",
             "A/D or Left/Right to glide horizontally",
-            "Collect Peanuts to increase speed!"
+            "Collect Peanuts to increase speed!",
+            "R to reset!"
         };
         
         const int LINE_SPACING = 25;  // Pixels between lines

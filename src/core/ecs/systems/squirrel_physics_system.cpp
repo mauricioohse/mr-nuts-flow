@@ -56,10 +56,9 @@ void SquirrelPhysicsSystem::HandleMovementInput(SquirrelComponent* squirrel, flo
     // State-specific modifications
     switch (squirrel->state) {
         case SQUIRREL_STATE_OPEN_ARMS:
-            currentHorizontalSpeed *= 4.0f;  // Double speed when arms are open
+            currentHorizontalSpeed *= 3.0f;  // Double speed when arms are open
             break;
         case SQUIRREL_STATE_WIGGLING:
-            currentHorizontalSpeed = 0.0f;  // No movement during wiggle
             break;
         default:
             break;
@@ -68,10 +67,10 @@ void SquirrelPhysicsSystem::HandleMovementInput(SquirrelComponent* squirrel, flo
     // Reset horizontal velocity each frame (for crisp movement)
     squirrel->velocityX = 0;
 
-    // Don't allow movement during wiggle state
-    if (squirrel->state == SQUIRREL_STATE_WIGGLING) {
-        return;
-    }
+    // // Don't allow movement during wiggle state
+    // if (squirrel->state == SQUIRREL_STATE_WIGGLING) {
+    //     return;
+    // }
 
     // Move left
     if (Input::IsKeyDown(SDL_SCANCODE_A) || Input::IsKeyDown(SDL_SCANCODE_LEFT)) {
