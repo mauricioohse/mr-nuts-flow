@@ -47,22 +47,22 @@ REFINEMENT PHASE
    - Add visual feedback for state changes
 
 2. Cloud System Enhancement
-   - Implement different cloud sizes
-   - Add proper bounce physics for black clouds
+x  - Implement different cloud sizes
+x  - Add proper bounce physics for black clouds
    - Fine-tune cloud placement for better gameplay
    - Add cloud visual variations
 
 3. Visual Polish
-   - Add proper squirrel animations
-   - Implement camera follow behavior
-   - Add background elements
+x  - Add proper squirrel animations
+x  - Implement camera follow behavior
+x  - Add background elements
    - Add visual effects for state changes
 
 4. Game Flow
-   - Add proper game start/end screens
-   - Implement score system based on time
-   - Add restart functionality
-   - Save best times
+x  - Add proper game start/end screens
+x  - Implement score system based on time
+x  - Add restart functionality
+x  - Save best times
 
 5. Audio and Feedback
    - Add sound effects for state changes
