@@ -22,6 +22,7 @@ enum ComponentTypes {
     COMPONENT_CAMERA = 1 << 7,
     COMPONENT_CLOUD = 1 << 8,
     COMPONENT_BACKGROUND = 1 << 9,
+    COMPONENT_PEANUT = 1 << 10,
     // Add more component types here
 }; 
 
@@ -92,6 +93,12 @@ enum ComponentTypes {
         if (background) { \
             background->Init(parallax); \
         } \
+    } while(0)
+
+#define ADD_PEANUT(entity, peanutType) \
+    do { \
+        g_Engine.entityManager.AddComponentToEntity(entity, COMPONENT_PEANUT); \
+        InitPeanut(entity, peanutType); \
     } while(0)
 
 

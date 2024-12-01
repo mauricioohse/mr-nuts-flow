@@ -19,6 +19,7 @@ void* ComponentArrays::GetComponentData(EntityID entity, ComponentType type) {
         case COMPONENT_CAMERA:  return &cameras[entity];
         case COMPONENT_CLOUD: return &clouds[entity];
         case COMPONENT_BACKGROUND: return &backgrounds[entity];
+        case COMPONENT_PEANUT: return &peanuts[entity];
 
         default:
             printf("Warning: Unknown component type %u\n", type);
@@ -92,4 +93,13 @@ void InitCloud(EntityID entity, CloudType cloudType){
         cloud->Init(cloudType);
     }
 } 
+
+void InitPeanut(EntityID entity, PeanutType type) {
+    PeanutComponent* peanut = 
+        (PeanutComponent*)g_Engine.componentArrays.GetComponentData(entity, COMPONENT_PEANUT);
+    
+    if (peanut) {
+        peanut->Init(type);
+    }
+}
 

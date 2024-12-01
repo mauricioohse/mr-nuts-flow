@@ -3,6 +3,7 @@
 #include "../core/window.h"
 #include "../core/input.h"
 #include "cloud_init.h"
+#include "peanut_init.h"
 
 Game g_Game;
 
@@ -13,12 +14,14 @@ bool Game::Init() {
     cameraSystem.Init();
     cloudSystem.Init();
     backgroundSystem.Init();
+    peanutSystem.Init();
+    
     g_Engine.systemManager.RegisterSystem(&backgroundSystem);
     g_Engine.systemManager.RegisterSystem(&renderSystem);
     g_Engine.systemManager.RegisterSystem(&squirrelSystem);
     g_Engine.systemManager.RegisterSystem(&cameraSystem);
-    g_Engine.systemManager.RegisterSystem(&cloudSystem);;
-
+    g_Engine.systemManager.RegisterSystem(&cloudSystem);
+    g_Engine.systemManager.RegisterSystem(&peanutSystem);
 
     // Create background
     backgroundEntity = g_Engine.entityManager.CreateEntity();
@@ -54,12 +57,16 @@ bool Game::Init() {
     ADD_TRANSFORM(cameraEntity, 1200.0f, 100.0f, 0.0f, 1.0f);
     ADD_CAMERA(cameraEntity, WINDOW_WIDTH, WINDOW_HEIGHT, squirrelEntity);
 
+    Reset();
+
     // Create manual clouds
     CreateCloudsFromData(cloudList, sizeof(cloudList) / sizeof(CloudInitData));
     
     float cloudSpawnThreshold = 500; 
     GenerateRandomClouds(cloudSpawnThreshold);
 
+    // Remove the test peanuts code and replace with random generation
+    GenerateRandomPeanuts(500.0f);  // Use same threshold as clouds
 
     // Store IDs for later use
     hitSoundID = SOUND_HIT;
@@ -84,8 +91,6 @@ bool Game::Init() {
     gameState = GAME_STATE_PLAYING;
     bestTime = 999999.0f;  // Some high number
     isNewRecord = false;
-
-
 
     return true;
 }
@@ -142,17 +147,21 @@ void Game::Render() {
     // Get squirrel position for height calculation
     TransformComponent* squirrelTransform = 
         (TransformComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
-    
+    SquirrelComponent *squirrel =
+        (SquirrelComponent *)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_SQUIRREL);
+
     // Calculate remaining height (in hundreds of pixels)
     float remainingHeight = (GAME_HEIGHT - squirrelTransform->y) / 100.0f;
     
-    // Render FPS counter, timer and height
+    // Render FPS counter, timer, height and speed
     char fpsText[32];
     char timerText[32];
     char heightText[32];
+    char speedText[32];
     snprintf(fpsText, sizeof(fpsText), "FPS: %.1f", 1.0f / g_Engine.deltaTime);
     snprintf(timerText, sizeof(timerText), "Time: %.2f", gameTimer);
     snprintf(heightText, sizeof(heightText), "Height: %.0f", remainingHeight);
+    snprintf(speedText, sizeof(speedText), "Max speed: %.0f", squirrel->maxSpeed);
     
     SDL_Color textColor = {255, 255, 255, 255};  // White color
     Font* fpsFont = ResourceManager::GetFont(fpsFontID);
@@ -166,6 +175,9 @@ void Game::Render() {
         // Render height below timer
         ResourceManager::RenderTextAlignedTopRight(fpsFont, heightText, textColor, 
             g_Engine.window->width - 10, 50);
+        // Render speed below height
+        ResourceManager::RenderTextAlignedTopRight(fpsFont, speedText, textColor, 
+            g_Engine.window->width - 10, 70);
         
         // If game is finished, show completion message
         if (gameState == GAME_STATE_FINISHED) {
@@ -205,10 +217,10 @@ void Game::Reset() {
     // Reset helicopter position
     TransformComponent* heliTransform = 
         (TransformComponent*)g_Engine.componentArrays.GetComponentData(helicopterEntity, COMPONENT_TRANSFORM);
-    heliTransform->x = 100.0f;
+    heliTransform->x = 1200.0f;
     heliTransform->y = 100.0f;
     
-    // Reset squirrel position and state
+    // Reset squirrel position and state  
     TransformComponent* squirrelTransform = 
         (TransformComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
     SquirrelComponent* squirrel = 

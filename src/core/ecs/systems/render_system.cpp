@@ -26,7 +26,7 @@ void RenderSystem::Update(float deltaTime, EntityManager* entities, ComponentArr
             SpriteComponent* sprite = 
                 (SpriteComponent*)components->GetComponentData(entity, COMPONENT_SPRITE);
 
-            if (!transform || !sprite || !sprite->texture) continue;
+            if (!transform || !sprite || !sprite->texture || !sprite->isVisible) continue;
 
             // Calculate screen position (with camera offset if camera exists)
             float screenX = transform->x;

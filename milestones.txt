@@ -30,8 +30,14 @@ x  - Implement simple cloud placement
 
 5. Basic Gameplay Loop
 x  - Add start position (helicopter drop)
-   - Add simple end condition (reach bottom)
-   - Implement basic timer
+x  - Add simple end condition (reach bottom)
+x  - Implement basic timer
+
+6 - Peanuts powerups that increase squirrel max speeds
+x  - create a peanut object that increases the max speed of the squirrel when collected
+x  - create a peanut object that shields the squirrel when touching a cloud
+x  - create a super peanut object that makes the squirrel invincible to clouds and increase speed temporarly for 5 seconds
+x  - add peanuts to random object generation in the beginning and reset
 
 REFINEMENT PHASE
 ---------------

@@ -45,6 +45,11 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
         if (squirrelRight > cloudLeft && squirrelLeft < cloudRight &&
             squirrelBottom > cloudTop && squirrelTop < cloudBottom) {
             
+            if (squirrel->hasShield) {
+                printf("protected from cloud!\n");
+                continue;
+            }
+
             // Different behavior based on cloud type
             if (cloud->type == CLOUD_WHITE) {
 

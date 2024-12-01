@@ -8,6 +8,7 @@
 #include <float.h>
 #include "components/cloud_components.h"
 #include "components/background_component.h"
+#include "components/peanut_components.h"
 
 // Add camera constants
 #define CAMERA_FOLLOW_SPEED 5.0f     // How fast camera catches up to target
@@ -38,6 +39,7 @@ struct SpriteComponent : Component {
     Texture* texture;
     int width, height;
     SDL_Rect srcRect;
+    bool isVisible;
 
     void Init(Texture* tex) {
         texture = tex;
@@ -45,11 +47,13 @@ struct SpriteComponent : Component {
             width = texture->width;
             height = texture->height;
             srcRect = {0, 0, width, height};
+            isVisible = true;
         } else {
             texture = nullptr;
             width = 0;
             height = 0;
             srcRect = {0, 0, 0, 0};
+            isVisible = false;
         }
     }
 
@@ -226,6 +230,7 @@ void InitSquirrel(EntityID entity);
 void InitSquirrelPhysics(EntityID entity);
 void InitCamera(EntityID entity, float width, float height, EntityID target = 0);
 void InitCloud(EntityID entity, CloudType type);
+void InitPeanut(EntityID entity, PeanutType type);
 
 struct ComponentArrays {
     // Component data pools
@@ -239,6 +244,7 @@ struct ComponentArrays {
     CameraComponent cameras[MAX_ENTITIES];
     CloudComponent clouds[MAX_ENTITIES];
     BackgroundComponent backgrounds[MAX_ENTITIES];
+    PeanutComponent peanuts[MAX_ENTITIES];
 
     // Core functions
     void* GetComponentData(EntityID entity, ComponentType type);

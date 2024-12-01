@@ -63,6 +63,9 @@ enum TextureID {
     TEXTURE_HELICOPTER,
     TEXTURE_BACKGROUND_MIDDLE,
     TEXTURE_BACKGROUND_BOTTOM,
+    TEXTURE_PEANUT,
+    TEXTURE_SHIELD_PEANUT,
+    TEXTURE_SUPER_PEANUT,
     TEXTURE_MAX
 };
 
@@ -86,6 +89,9 @@ static const TextureResource GAME_TEXTURES[] = {
     {"assets/sprites/helicopter.png", TEXTURE_HELICOPTER},
     {"assets/background/background_middle.png", TEXTURE_BACKGROUND_MIDDLE},
     {"assets/background/background_bottom.png", TEXTURE_BACKGROUND_BOTTOM},
+    {"assets/sprites/peanuts/peanut_boost.png", TEXTURE_PEANUT},
+    {"assets/sprites/peanuts/peanut_shield.png", TEXTURE_SHIELD_PEANUT},
+    {"assets/sprites/peanuts/peanut_super.png", TEXTURE_SUPER_PEANUT},
     // Add new textures here
 };
 

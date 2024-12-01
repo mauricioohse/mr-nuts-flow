@@ -9,6 +9,7 @@
 #include "../core/ecs/systems/camera_system.h"
 #include "../core/ecs/systems/cloud_system.h"
 #include "../core/ecs/systems/background_system.h"
+#include "../core/ecs/systems/peanut_system.h"
 
 enum GameState {
     GAME_STATE_PLAYING,
@@ -37,6 +38,7 @@ private:
     CameraSystem cameraSystem;
     CloudSystem cloudSystem;
     BackgroundSystem backgroundSystem;
+    PeanutSystem peanutSystem;
     
     // Entities
     EntityID cameraEntity;

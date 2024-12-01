@@ -13,8 +13,8 @@ typedef enum {
 
 // Physics constants
 #define SQUIRREL_GRAVITY 150.0f          // Increased for more noticeable falling
-#define SQUIRREL_OPEN_ARMS_MAX_SPEED 300.0f
-#define SQUIRREL_CLOSED_ARMS_MAX_SPEED 1000.0f
+#define SQUIRREL_OPEN_ARMS_MAX_SPEED 200.0f
+#define SQUIRREL_CLOSED_ARMS_MAX_SPEED 400.0f
 #define SQUIRREL_WIGGLE_MAX_SPEED 100.0f
 #define SQUIRREL_ROTATION_SPEED 90.0f  // Degrees per second
 #define SQUIRREL_TAP_ROTATION 15.0f     // Degrees per tap
@@ -40,6 +40,14 @@ struct SquirrelComponent : Component {
     float acceleration;     // For closed arms state
     float rotationSpeed;    // For open arms state rotation
 
+    // Powerup properties
+    float baseMaxSpeed;        // Store original max speed
+    float speedBoost;         // Additional speed from powerups
+    bool hasShield;           // Immunity to clouds
+    float shieldTimer;        // Duration of shield powerup
+    bool hasSuperMode;        // Super peanut active
+    float superTimer;         // Duration of super mode
+
     void Init() {
         printf("SquirrelComponent::Init() called\n");
         // Gameplay state init
@@ -57,6 +65,14 @@ struct SquirrelComponent : Component {
         gravity = SQUIRREL_GRAVITY;
         acceleration = 0;
         rotationSpeed = 0;
+
+        // Initialize powerup properties
+        baseMaxSpeed = SQUIRREL_OPEN_ARMS_MAX_SPEED;
+        speedBoost = 0.0f;
+        hasShield = false;
+        shieldTimer = 0.0f;
+        hasSuperMode = false;
+        superTimer = 0.0f;
     }
 
     void Destroy() override {
