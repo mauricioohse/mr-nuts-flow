@@ -68,12 +68,8 @@ x  - Save best times
    - Add sound effects for state changes
    x Background music (toggleable with M key)
    x  Helicopter ambient sound (when near)
-      Wind whooshing sound (speed-based intensity)
-      Squirrel State Changes
-         Initial drop from helicopter sound
-         Open arms -> Closed arms transition sound
-         Closed arms -> Open arms transition sound
-      cloud hit (5 variations)
+   x  Wind whooshing sound (speed-based intensity)
+   x  cloud hit
       power up collection
       power up ending sound
       victory sound

@@ -31,6 +31,7 @@ enum SoundID {
     SOUND_WIND,
     SOUND_CLOUD_HIT,
     SOUND_CLOUD_BOUNCE,
+    SOUND_CHOMP,
     SOUND_MAX
 };
 
@@ -116,6 +117,7 @@ static const SoundResource GAME_SOUNDS[] = {
     {"assets/sounds/wind.mp3", SOUND_WIND}, // 420301__tonik-95__wind18.m4a
     {"assets/sounds/hit.wav", SOUND_CLOUD_HIT},      // Add this
     {"assets/sounds/Cartoon Boing Sound Effect.mp3", SOUND_CLOUD_BOUNCE}, // https://www.youtube.com/watch?v=F7oMDw2zKog&list=PLM3YufdBArxhztFAvw_d26CsAEJqAK_TB
+    {"assets/sounds/chomp.wav", SOUND_CHOMP}, // https://freesound.org/people/maugusto_sfx/sounds/521253/
     // Add new sounds here
 };
 

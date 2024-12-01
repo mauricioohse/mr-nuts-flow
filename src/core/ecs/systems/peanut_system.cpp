@@ -72,10 +72,15 @@ void PeanutSystem::Update(float deltaTime, EntityManager* entities, ComponentArr
                 // Mark peanut as collected and hide its sprite
                 peanut->wasCollected = true;
                 peanutSprite->isVisible = false;  // Hide using sprite component
-                printf("peanut type %d collected\n", peanut->type);
                 
-                // TODO: Play collection sound
-                // TODO: Add particle effect
+                // Play chomp sound
+                Sound* chompSound = ResourceManager::GetSound(SOUND_CHOMP);
+                if (chompSound) {
+                    int channel = Mix_PlayChannel(-1, chompSound->sdlChunk, 0);
+                    Mix_Volume(channel, 128);  // Set to lower volume
+                }
+                
+                printf("peanut type %d collected\n", peanut->type);
             }
         }
     }
