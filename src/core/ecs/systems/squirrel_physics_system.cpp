@@ -45,8 +45,8 @@ void SquirrelPhysicsSystem::Update(float deltaTime, EntityManager* entities, Com
 }
 
 void SquirrelPhysicsSystem::HandleMovementInput(SquirrelComponent* squirrel, float deltaTime) {
-    const float BASE_HORIZONTAL_SPEED = 200.0f;  // Base speed when arms are closed
-    const float MAX_HORIZONTAL_SPEED = 600.0f;  // Maximum possible horizontal speed
+    const float BASE_HORIZONTAL_SPEED = 300.0f;  // Base speed when arms are closed
+    const float MAX_HORIZONTAL_SPEED = 800.0f;  // Maximum possible horizontal speed
     float currentHorizontalSpeed;
     
     // Calculate horizontal speed based on maxSpeed

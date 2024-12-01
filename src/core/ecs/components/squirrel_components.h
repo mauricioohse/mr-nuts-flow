@@ -22,7 +22,6 @@ typedef enum {
 #define SQUIRREL_WIGGLE_DURATION 1.0f // in seconds
 #define SQUIRREL_GRACE_PERIOD 3.0f // in seconds
 #define SQUIRREL_DROP_DELAY 1.0f  // Time before squirrel starts falling
-#define MOVEMENT_FORCE 1000.0f //
 #define SMOOTHING_FACTOR 0.05f;  // Adjust this value to control smoothing (0.05-0.2 works well)
 struct SquirrelComponent : Component {
     // Gameplay state

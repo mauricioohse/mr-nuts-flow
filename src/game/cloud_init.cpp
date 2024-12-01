@@ -52,7 +52,7 @@ void GenerateRandomClouds(float playerStartY) {
     int cloudCount = 0;
 
     // Generate clouds for each vertical section
-    for (float y = playerStartY; y < GAME_HEIGHT && cloudCount < MAX_CLOUDS; y += WINDOW_HEIGHT) {
+    for (float y = playerStartY; y < (GAME_HEIGHT- WINDOW_HEIGHT*3) && cloudCount < MAX_CLOUDS; y += WINDOW_HEIGHT) {
         // Calculate how many clouds to place in this section
         float densityMultiplier = GetCloudDensityMultiplier(y);
         int cloudsInSection = (int)(CLOUDS_PER_SECTION * densityMultiplier);

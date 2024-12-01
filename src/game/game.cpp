@@ -157,7 +157,7 @@ void Game::Update(float deltaTime) {
             (TransformComponent *)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
 
         // Check if squirrel reached bottom
-        if (squirrelTransform->y >= GAME_HEIGHT + 500) {  // Leave some margin at bottom
+        if (squirrelTransform->y >= GAME_HEIGHT + 400) {  // Leave some margin at bottom
             gameState = GAME_STATE_FINISHED;
             
             // Check if this is a new record
@@ -175,11 +175,37 @@ void Game::Render() {
     // Systems will handle rendering of entities
     g_Engine.systemManager.UpdateSystems(g_Engine.deltaTime, &g_Engine.entityManager, &g_Engine.componentArrays);
     
+    // Get squirrel state for instructions
+    SquirrelComponent* squirrel = 
+        (SquirrelComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_SQUIRREL);
+
+    // Render instructions if squirrel is in dropping state
+    if (squirrel && squirrel->state == SQUIRREL_STATE_DROPPING) {
+        Font* font = ResourceManager::GetFont(fpsFontID);
+        SDL_Color textColor = {255, 255, 255, 255};  // White color
+        
+        const char* instructions[] = {
+            "Help Mr Nuts reach his family on the island below!",
+            "W/Space/Up arrow to drop and to open the wings",
+            "A/D or Left/Right to glide horizontally",
+            "Collect Peanuts to increase speed!"
+        };
+        
+        const int LINE_SPACING = 25;  // Pixels between lines
+        const int START_X = 00;       // Left margin
+        const int START_Y = 200;      
+        
+        if (font) {
+            for (int i = 0; i < 4; i++) {
+                ResourceManager::RenderTextAlignedTopRight(font, instructions[i], textColor, 
+                    START_X + 500, START_Y + i * LINE_SPACING);
+            }
+        }
+    }
+    
     // Get squirrel position for height calculation
     TransformComponent* squirrelTransform = 
         (TransformComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
-    SquirrelComponent *squirrel =
-        (SquirrelComponent *)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_SQUIRREL);
 
     // Calculate remaining height (in hundreds of pixels)
     float remainingHeight = (GAME_HEIGHT - squirrelTransform->y) / 100.0f;
