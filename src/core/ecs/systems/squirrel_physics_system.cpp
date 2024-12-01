@@ -37,6 +37,14 @@ void SquirrelPhysicsSystem::Update(float deltaTime, EntityManager* entities, Com
 }
 
 void SquirrelPhysicsSystem::UpdateRotation(SquirrelComponent* squirrel, TransformComponent* transform, float deltaTime) {
+    // Special rotation handling for wiggle state
+    if (squirrel->state == SQUIRREL_STATE_WIGGLING) {
+        // Create a sine wave motion for wiggling
+        float wiggleAngle = 30.0f * sinf(squirrel->wiggleTimer * 15.0f) + 90; // 30 degree amplitude, 15 rad/s frequency
+        transform->rotation = wiggleAngle + SQUIRREL_SPRITE_ROTATION_OFFSET;
+        return;
+    }
+
     // Calculate current velocity angle
     float velocityAngle = atan2f(squirrel->velocityY, squirrel->velocityX) * 180.0f / M_PI;
     
