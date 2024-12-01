@@ -86,11 +86,11 @@ void InitCamera(EntityID entity, float viewportWidth, float viewportHeight, Enti
     }
 }
 
-void InitCloud(EntityID entity, CloudType cloudType){
+void InitCloud(EntityID entity, CloudType cloudType, CloudSize cloudSize){
     CloudComponent* cloud = (CloudComponent*) g_Engine.componentArrays.GetComponentData(entity, COMPONENT_CLOUD);
 
     if (cloud){
-        cloud->Init(cloudType);
+        cloud->Init(cloudType, cloudSize);
     }
 } 
 

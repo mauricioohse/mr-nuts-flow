@@ -11,10 +11,29 @@ void CreateCloudsFromData(const CloudInitData* cloudList, int count) {
         Texture* tex = (data.type == CLOUD_WHITE) ? 
             ResourceManager::GetTexture(TEXTURE_CLOUD_1) : ResourceManager::GetTexture(TEXTURE_CLOUD_2);
 
+        if (data.type == CLOUD_WHITE){
+            switch (data.size)
+            {
+            case CLOUD_SIZE_SMALL:
+                tex = ResourceManager::GetTexture(TEXTURE_WHITE_CLOUDE_SMALL);
+                break;
+            case CLOUD_SIZE_MEDIUM:
+                tex = ResourceManager::GetTexture(TEXTURE_WHITE_CLOUDE_MEDIUM);
+                break;
+            case CLOUD_SIZE_LARGE:
+                tex = ResourceManager::GetTexture(TEXTURE_WHITE_CLOUDE_LARGE);
+                break;
+            
+            default:
+                printf("invalid cloud size!\n");
+                break;
+            }
+        }
+
         EntityID cloudEntity = g_Engine.entityManager.CreateEntity();
         ADD_TRANSFORM(cloudEntity, data.x, data.y, 0, 1);
         ADD_SPRITE(cloudEntity, tex);
-        ADD_CLOUD(cloudEntity, data.type);
+        ADD_CLOUD(cloudEntity, data.type, data.size);
     }
 }
 
@@ -48,6 +67,7 @@ void GenerateRandomClouds(float playerStartY) {
 
             // Determine cloud type (20% chance for black clouds)
             cloud.type = (rand() % 5 == 0) ? CLOUD_BLACK : CLOUD_WHITE;
+            cloud.size = (cloud.type == CLOUD_BLACK) ? CLOUD_SIZE_SMALL : (CloudSize) (rand()%3) ;
 
             // Check minimum spacing with previously placed clouds
             bool tooClose = false;

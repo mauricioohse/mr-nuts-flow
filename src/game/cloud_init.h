@@ -5,14 +5,15 @@ struct CloudInitData {
     float x;
     float y;
     CloudType type;
+    CloudSize size;
 };
 
 // Define cloud layout
 const CloudInitData cloudList[] = {
-    {600, 600, CLOUD_WHITE},
-    {200, 600, CLOUD_BLACK},
-    {400, 400, CLOUD_WHITE},
-    {800, 300, CLOUD_BLACK},
+    {600, 600, CLOUD_WHITE, CLOUD_SIZE_MEDIUM},
+    {200, 600, CLOUD_BLACK, CLOUD_SIZE_SMALL},
+    {400, 400, CLOUD_WHITE, CLOUD_SIZE_LARGE},
+    {800, 300, CLOUD_BLACK, CLOUD_SIZE_SMALL},
     // Add more clouds as needed
 };
 // Constants for cloud generation

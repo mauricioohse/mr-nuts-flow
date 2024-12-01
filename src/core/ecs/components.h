@@ -229,7 +229,7 @@ void InitGravity(EntityID entity, float scale = 1.0f);
 void InitSquirrel(EntityID entity);
 void InitSquirrelPhysics(EntityID entity);
 void InitCamera(EntityID entity, float width, float height, EntityID target = 0);
-void InitCloud(EntityID entity, CloudType type);
+void InitCloud(EntityID entity, CloudType type, CloudSize cloudSize);
 void InitPeanut(EntityID entity, PeanutType type);
 
 struct ComponentArrays {

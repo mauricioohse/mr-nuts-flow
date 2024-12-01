@@ -43,7 +43,6 @@ REFINEMENT PHASE
 ---------------
 1. Enhanced States
    - Add wiggle state implementation
-   - Implement grace period after wiggle
    - Polish state transitions
    - Add visual feedback for state changes
 

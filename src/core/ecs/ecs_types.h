@@ -80,10 +80,10 @@ enum ComponentTypes {
     } while(0)
 
 
-#define ADD_CLOUD(entity, cloudType) \
+#define ADD_CLOUD(entity, cloudType, size) \
     do { \
         g_Engine.entityManager.AddComponentToEntity(entity, COMPONENT_CLOUD); \
-        InitCloud(entity, cloudType); \
+        InitCloud(entity, cloudType, size); \
     } while(0)
 
 #define ADD_BACKGROUND(entity, parallax) \

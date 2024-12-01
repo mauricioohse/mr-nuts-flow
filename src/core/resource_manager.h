@@ -66,6 +66,9 @@ enum TextureID {
     TEXTURE_PEANUT,
     TEXTURE_SHIELD_PEANUT,
     TEXTURE_SUPER_PEANUT,
+    TEXTURE_WHITE_CLOUDE_SMALL,
+    TEXTURE_WHITE_CLOUDE_MEDIUM,
+    TEXTURE_WHITE_CLOUDE_LARGE,
     TEXTURE_MAX
 };
 
@@ -92,6 +95,9 @@ static const TextureResource GAME_TEXTURES[] = {
     {"assets/sprites/peanuts/peanut_boost.png", TEXTURE_PEANUT},
     {"assets/sprites/peanuts/peanut_shield.png", TEXTURE_SHIELD_PEANUT},
     {"assets/sprites/peanuts/peanut_super.png", TEXTURE_SUPER_PEANUT},
+    {"assets/sprites/clouds/cloud_white_small.png", TEXTURE_WHITE_CLOUDE_SMALL},
+    {"assets/sprites/clouds/cloud_white_medium.png", TEXTURE_WHITE_CLOUDE_MEDIUM},
+    {"assets/sprites/clouds/cloud_white_large.png", TEXTURE_WHITE_CLOUDE_LARGE},
     // Add new textures here
 };
 
