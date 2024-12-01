@@ -45,22 +45,23 @@ void SquirrelPhysicsSystem::Update(float deltaTime, EntityManager* entities, Com
 }
 
 void SquirrelPhysicsSystem::HandleMovementInput(SquirrelComponent* squirrel, float deltaTime) {
-    const float BASE_HORIZONTAL_SPEED = 400.0f;  // Base speed when arms are closed
+    const float BASE_HORIZONTAL_SPEED = 200.0f;  // Base speed when arms are closed
+    const float MAX_HORIZONTAL_SPEED = 600.0f;  // Maximum possible horizontal speed
     float currentHorizontalSpeed;
     
-    // Determine horizontal speed based on state
+    // Calculate horizontal speed based on maxSpeed
+    float speedRatio = squirrel->maxSpeed / SQUIRREL_OPEN_ARMS_MAX_SPEED;  // How much faster than base are we?
+    currentHorizontalSpeed = std::min(BASE_HORIZONTAL_SPEED * speedRatio, MAX_HORIZONTAL_SPEED);
+    
+    // State-specific modifications
     switch (squirrel->state) {
         case SQUIRREL_STATE_OPEN_ARMS:
-            currentHorizontalSpeed = BASE_HORIZONTAL_SPEED * 2.0f;  // Double speed when arms are open
-            break;
-        case SQUIRREL_STATE_CLOSED_ARMS:
-            currentHorizontalSpeed = BASE_HORIZONTAL_SPEED;  // Base speed when arms are closed
+            currentHorizontalSpeed *= 2.0f;  // Double speed when arms are open
             break;
         case SQUIRREL_STATE_WIGGLING:
             currentHorizontalSpeed = 0.0f;  // No movement during wiggle
             break;
         default:
-            currentHorizontalSpeed = BASE_HORIZONTAL_SPEED;  // Default to base speed
             break;
     }
     

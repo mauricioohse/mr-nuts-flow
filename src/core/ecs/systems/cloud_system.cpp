@@ -39,7 +39,7 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
         // Calculate cloud boundaries // btw there are hacks here because sprite is centered at transform coordinates
         float cloudTop = cloudTransform->y - cloudSprite->height/2 + COLLISION_GRACE_DISTANCE;
         float cloudBottom = cloudTransform->y + cloudSprite->height/2 - COLLISION_GRACE_DISTANCE;
-        float cloudLeft = cloudTransform->x - cloudSprite->width/2 + COLLISION_GRACE_DISTANCE;
+        float cloudLeft = cloudTransform->x - cloudSprite->width/2 + 3*COLLISION_GRACE_DISTANCE;
         float cloudRight = cloudTransform->x + cloudSprite->width/2;
         
         // Calculate squirrel boundaries
