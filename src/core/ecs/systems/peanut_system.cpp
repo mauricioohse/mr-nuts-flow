@@ -57,7 +57,7 @@ void PeanutSystem::Update(float deltaTime, EntityManager* entities, ComponentArr
                 switch (peanut->type) {
                     case PEANUT_TYPE_REGULAR:
                         squirrel->speedBoost += PEANUT_SPEED_BOOST;
-                        squirrel->velocityY += PEANUT_SPEED_BOOST*3;
+                        squirrel->velocityY += PEANUT_SPEED_BOOST*6;
                         squirrel->gravity += SQUIRREL_GRAVITY/5;
                         camera->cameraKick = -150.0f;
                         break;

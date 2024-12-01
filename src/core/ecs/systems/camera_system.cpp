@@ -33,7 +33,7 @@ void CameraSystem::Update(float deltaTime, EntityManager* entities, ComponentArr
             camera->targetY = targetTransform->y - camera->viewportHeight/2 + 325.0f + camera->cameraKick;
 
             // Smooth follow
-            camera->x += (camera->targetX - camera->x) * CAMERA_FOLLOW_SPEED * deltaTime;
+            camera->x += (camera->targetX - camera->x) * CAMERA_FOLLOW_SPEED*4 * deltaTime;
             camera->y += (camera->targetY - camera->y) * CAMERA_FOLLOW_SPEED * deltaTime;
 
             // clamp at the bottom
