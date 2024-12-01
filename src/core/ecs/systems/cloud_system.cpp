@@ -36,11 +36,11 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
         TransformComponent* cloudTransform = &components->transforms[cloudEntity];
         SpriteComponent* cloudSprite = &components->sprites[cloudEntity];
         
-        // Calculate cloud boundaries
-        float cloudTop = cloudTransform->y + COLLISION_GRACE_DISTANCE;
-        float cloudBottom = cloudTransform->y + cloudSprite->height - COLLISION_GRACE_DISTANCE;
-        float cloudLeft = cloudTransform->x + COLLISION_GRACE_DISTANCE;
-        float cloudRight = cloudTransform->x + cloudSprite->width - COLLISION_GRACE_DISTANCE;
+        // Calculate cloud boundaries // btw there are hacks here because sprite is centered at transform coordinates
+        float cloudTop = cloudTransform->y - cloudSprite->height/2 + COLLISION_GRACE_DISTANCE;
+        float cloudBottom = cloudTransform->y + cloudSprite->height/2 - COLLISION_GRACE_DISTANCE;
+        float cloudLeft = cloudTransform->x - cloudSprite->width/2 + COLLISION_GRACE_DISTANCE;
+        float cloudRight = cloudTransform->x + cloudSprite->width/2;
         
         // Calculate squirrel boundaries
         SpriteComponent* squirrelSprite = &components->sprites[squirrelEntity];
@@ -52,7 +52,11 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
         // Check for collision
         if (squirrelRight > cloudLeft && squirrelLeft < cloudRight &&
             squirrelBottom > cloudTop && squirrelTop < cloudBottom) {
-            
+
+            printf("Squirrel: (%.1f,%.1f)-(%.1f,%.1f) Cloud: (%.1f,%.1f)-(%.1f,%.1f)\n",
+                squirrelLeft, squirrelTop, squirrelRight, squirrelBottom,
+                cloudLeft, cloudTop, cloudRight, cloudBottom);
+
             if (squirrel->hasShield) {
                 printf("protected from cloud!\n");
                 continue;

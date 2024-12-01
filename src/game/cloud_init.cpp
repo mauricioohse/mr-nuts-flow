@@ -65,8 +65,8 @@ void GenerateRandomClouds(float playerStartY) {
             cloud.x = (float)(rand() % GAME_WIDTH);
             cloud.y = y + (float)(rand() % WINDOW_HEIGHT);
 
-            // Determine cloud type (20% chance for black clouds)
-            cloud.type = (rand() % 5 == 0) ? CLOUD_BLACK : CLOUD_WHITE;
+            // Determine cloud type (20% chance for black clouds) - CHANGED - ONLY WHITE CLOUDS
+            cloud.type = CLOUD_WHITE;//(rand() % 5 == 0) ? CLOUD_BLACK : CLOUD_WHITE; 
             cloud.size = (cloud.type == CLOUD_BLACK) ? CLOUD_SIZE_SMALL : (CloudSize) (rand()%3) ;
 
             // Check minimum spacing with previously placed clouds
