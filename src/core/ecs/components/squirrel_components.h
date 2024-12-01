@@ -38,6 +38,7 @@ struct SquirrelComponent : Component {
     float velocityX;
     float velocityY;
     float gravity;          // Gravity acceleration
+    float currentGravity;
     float acceleration;     // For closed arms state
     float rotationSpeed;    // For open arms state rotation
 
@@ -64,6 +65,7 @@ struct SquirrelComponent : Component {
         velocityX = 0;
         velocityY = 0;
         gravity = SQUIRREL_GRAVITY;
+        currentGravity = SQUIRREL_GRAVITY;
         acceleration = 0;
         rotationSpeed = 0;
 

@@ -157,7 +157,7 @@ void Game::Update(float deltaTime) {
             (TransformComponent *)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_TRANSFORM);
 
         // Check if squirrel reached bottom
-        if (squirrelTransform->y >= GAME_HEIGHT + 300) {  // Leave some margin at bottom
+        if (squirrelTransform->y >= GAME_HEIGHT + 500) {  // Leave some margin at bottom
             gameState = GAME_STATE_FINISHED;
             
             // Check if this is a new record

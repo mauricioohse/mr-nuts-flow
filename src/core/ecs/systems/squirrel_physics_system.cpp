@@ -50,13 +50,13 @@ void SquirrelPhysicsSystem::HandleMovementInput(SquirrelComponent* squirrel, flo
     float currentHorizontalSpeed;
     
     // Calculate horizontal speed based on maxSpeed
-    float speedRatio = squirrel->maxSpeed / SQUIRREL_OPEN_ARMS_MAX_SPEED;  // How much faster than base are we?
+    float speedRatio = 1;  // How much faster than base are we?
     currentHorizontalSpeed = std::min(BASE_HORIZONTAL_SPEED * speedRatio, MAX_HORIZONTAL_SPEED);
     
     // State-specific modifications
     switch (squirrel->state) {
         case SQUIRREL_STATE_OPEN_ARMS:
-            currentHorizontalSpeed *= 2.0f;  // Double speed when arms are open
+            currentHorizontalSpeed *= 4.0f;  // Double speed when arms are open
             break;
         case SQUIRREL_STATE_WIGGLING:
             currentHorizontalSpeed = 0.0f;  // No movement during wiggle
@@ -85,7 +85,7 @@ void SquirrelPhysicsSystem::HandleMovementInput(SquirrelComponent* squirrel, flo
 }
 
 void SquirrelPhysicsSystem::ApplyGravity(SquirrelComponent* squirrel, float deltaTime) {
-    squirrel->velocityY += squirrel->gravity * deltaTime;
+    squirrel->velocityY += squirrel->currentGravity * deltaTime;
 }
 
 void SquirrelPhysicsSystem::LimitVerticalSpeed(SquirrelComponent* squirrel) {
@@ -119,33 +119,37 @@ void SquirrelPhysicsSystem::HandleSquirrelState(SquirrelComponent* squirrel,
     switch (squirrel->state) {
 
         case SQUIRREL_STATE_DROPPING:
-            if (Input::IsKeyDown(SDL_SCANCODE_SPACE)) squirrel->state = SQUIRREL_STATE_OPEN_ARMS;
+            if ((Input::IsKeyDown(SDL_SCANCODE_SPACE) || Input::IsKeyDown(SDL_SCANCODE_W) || Input::IsKeyDown(SDL_SCANCODE_UP))   ) squirrel->state = SQUIRREL_STATE_OPEN_ARMS;
             // Don't apply gravity or controls while dropping
             
             sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_SITTING));
             squirrel->velocityX = 0;
             squirrel->velocityY = 0;
+            squirrel->currentGravity =squirrel->gravity; 
             break;
 
         case SQUIRREL_STATE_OPEN_ARMS:
             squirrel->maxSpeed = SQUIRREL_OPEN_ARMS_MAX_SPEED + squirrel->speedBoost/2;
             sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_OPEN));
-            if (Input::IsKeyDown(SDL_SCANCODE_SPACE) && squirrel->state == SQUIRREL_STATE_OPEN_ARMS) {
+            if (!(Input::IsKeyDown(SDL_SCANCODE_SPACE) || Input::IsKeyDown(SDL_SCANCODE_W) || Input::IsKeyDown(SDL_SCANCODE_UP)) && squirrel->state == SQUIRREL_STATE_OPEN_ARMS) {
                 squirrel->state = SQUIRREL_STATE_CLOSED_ARMS;
             }
+            squirrel->currentGravity =squirrel->gravity; 
             break;
 
         case SQUIRREL_STATE_CLOSED_ARMS:
             squirrel->maxSpeed = SQUIRREL_CLOSED_ARMS_MAX_SPEED + squirrel->speedBoost;
             sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_CLOSED));
-            if (!Input::IsKeyDown(SDL_SCANCODE_SPACE) && squirrel->state == SQUIRREL_STATE_CLOSED_ARMS) {
+            if ((Input::IsKeyDown(SDL_SCANCODE_SPACE) || Input::IsKeyDown(SDL_SCANCODE_W) || Input::IsKeyDown(SDL_SCANCODE_UP)) && squirrel->state == SQUIRREL_STATE_CLOSED_ARMS) {
                 squirrel->state = SQUIRREL_STATE_OPEN_ARMS;
             }
+            squirrel->currentGravity = 2 * squirrel->gravity; 
             break;
 
         case SQUIRREL_STATE_WIGGLING:
             squirrel->maxSpeed = SQUIRREL_WIGGLE_MAX_SPEED + squirrel->speedBoost/5;
             sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_OPEN));
+            squirrel->currentGravity =squirrel->gravity; 
 
                 // Handle wiggle state timing and transitions
             if (squirrel->state == SQUIRREL_STATE_WIGGLING) {
