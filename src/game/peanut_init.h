@@ -16,5 +16,5 @@ void MakeAllPeanutsVisibleAgain();
 // Constants for peanut generation
 #define MIN_PEANUT_SPACING 300.0f      // Minimum vertical space between peanuts
 #define PEANUT_SPAWN_CHANCE 0.3f       // 30% chance to spawn a peanut at each threshold
-#define SUPER_PEANUT_CHANCE 0.1f       // 10% chance for a peanut to be super
-#define SHIELD_PEANUT_CHANCE 0.3f      // 30% chance for a peanut to be shield 
+#define SUPER_PEANUT_CHANCE 0.0f       // 0% chance for a peanut to be super
+#define SHIELD_PEANUT_CHANCE 0.0f      // 0% chance for a peanut to be shield 

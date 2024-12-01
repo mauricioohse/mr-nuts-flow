@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 #include "../../engine_constants.h"
+#include <algorithm>
 
 
 void SquirrelPhysicsSystem::Init() {
@@ -165,7 +166,7 @@ void SquirrelPhysicsSystem::HandleSquirrelState(SquirrelComponent* squirrel,
             break;
 
         case SQUIRREL_STATE_OPEN_ARMS:
-            squirrel->maxSpeed = SQUIRREL_OPEN_ARMS_MAX_SPEED + squirrel->speedBoost;
+            squirrel->maxSpeed = SQUIRREL_OPEN_ARMS_MAX_SPEED + squirrel->speedBoost/2;
             sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_OPEN));
             if (Input::IsKeyDown(SDL_SCANCODE_SPACE) && squirrel->state == SQUIRREL_STATE_OPEN_ARMS) {
                 squirrel->state = SQUIRREL_STATE_CLOSED_ARMS;
@@ -181,7 +182,7 @@ void SquirrelPhysicsSystem::HandleSquirrelState(SquirrelComponent* squirrel,
             break;
 
         case SQUIRREL_STATE_WIGGLING:
-            squirrel->maxSpeed = SQUIRREL_WIGGLE_MAX_SPEED + squirrel->speedBoost/2;
+            squirrel->maxSpeed = SQUIRREL_WIGGLE_MAX_SPEED + squirrel->speedBoost/5;
             sprite->ChangeTexture(ResourceManager::GetTexture(TEXTURE_SQUIRREL_OPEN));
 
                 // Handle wiggle state timing and transitions

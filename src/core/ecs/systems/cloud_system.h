@@ -13,4 +13,6 @@ struct CloudSystem : System {
 private:
     SoundID cloudHitSoundID;
     SoundID cloudBounceSoundID;
+    float hitSoundCooldown;
+    const float HIT_SOUND_COOLDOWN_TIME = 0.5f;
 }; 

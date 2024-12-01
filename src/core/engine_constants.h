@@ -6,6 +6,6 @@
 #define WINDOW_HEIGHT 800
 #define WINDOW_WIDTH 800
 #define GAME_WIDTH (WINDOW_WIDTH * 3)    // 3 windows wide
-#define GAME_HEIGHT (WINDOW_HEIGHT * 10)  // 50 windows tall
+#define GAME_HEIGHT (WINDOW_HEIGHT * 50)  // 50 windows tall
 
 

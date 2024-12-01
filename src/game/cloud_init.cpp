@@ -9,7 +9,7 @@ void CreateCloudsFromData(const CloudInitData* cloudList, int count) {
         const CloudInitData& data = cloudList[i];
         
         Texture* tex = (data.type == CLOUD_WHITE) ? 
-            ResourceManager::GetTexture(TEXTURE_CLOUD_1) : ResourceManager::GetTexture(TEXTURE_CLOUD_2);
+            ResourceManager::GetTexture(TEXTURE_CLOUD_1) : ResourceManager::GetTexture(TEXTURE_BLACK_CLOUD_SMALL);
 
         if (data.type == CLOUD_WHITE){
             switch (data.size)

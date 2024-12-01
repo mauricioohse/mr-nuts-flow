@@ -5,9 +5,15 @@ void CloudSystem::Init() {
     printf("CloudSystem initialized\n");
     cloudHitSoundID = SOUND_CLOUD_HIT;
     cloudBounceSoundID = SOUND_CLOUD_BOUNCE;
+    hitSoundCooldown = 0.0f;
 }
 
 void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArrays* components) {
+    // Update cooldown timer
+    if (hitSoundCooldown > 0.0f) {
+        hitSoundCooldown -= deltaTime;
+    }
+
     // Find squirrel entity first
     EntityID squirrelEntity = 0;
     for (EntityID entity = 1; entity < MAX_ENTITIES; entity++) {
@@ -61,7 +67,7 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
                 Sound* hitSound = ResourceManager::GetSound(cloudHitSoundID);
                 if (hitSound) {
                     int channel = Mix_PlayChannel(-1, hitSound->sdlChunk, 0);
-                    Mix_Volume(channel, MIX_MAX_VOLUME);  // Set to full volume (128)
+                    Mix_Volume(channel, MIX_MAX_VOLUME/2);  // Set to full volume (128)
                 }
             }
             else if (cloud->type == CLOUD_BLACK) {
@@ -69,10 +75,13 @@ void CloudSystem::Update(float deltaTime, EntityManager* entities, ComponentArra
                 squirrel->velocityY = -cloud->bounceForce;
                 
                 // Play bounce sound at higher volume
-                Sound* bounceSound = ResourceManager::GetSound(cloudBounceSoundID);
-                if (bounceSound) {
-                    int channel = Mix_PlayChannel(-1, bounceSound->sdlChunk, 0);
-                    Mix_Volume(channel, MIX_MAX_VOLUME);  // Set to full volume (128)
+                if (hitSoundCooldown <= 0.0f) {
+                    Sound* cloudSound = ResourceManager::GetSound(cloudBounceSoundID);
+                    if (cloudSound) {
+                        int channel = Mix_PlayChannel(-1, cloudSound->sdlChunk, 0);
+                        Mix_Volume(channel, MIX_MAX_VOLUME/2);
+                        hitSoundCooldown = HIT_SOUND_COOLDOWN_TIME;  // Reset cooldown
+                    }
                 }
             }
         }
