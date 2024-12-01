@@ -88,10 +88,11 @@ void SquirrelPhysicsSystem::ApplyGravity(SquirrelComponent* squirrel, float delt
 }
 
 void SquirrelPhysicsSystem::LimitVerticalSpeed(SquirrelComponent* squirrel) {
-    // Only limit vertical speed using maxSpeed
+    
     if (fabsf(squirrel->velocityY) > squirrel->maxSpeed) {
-        float sign = squirrel->velocityY > 0 ? 1.0f : -1.0f;
-        squirrel->velocityY = sign * squirrel->maxSpeed;
+        float targetSpeed = squirrel->maxSpeed * (squirrel->velocityY > 0 ? 1.0f : -1.0f);
+        // Lerp between current velocity and target speed
+        squirrel->velocityY = squirrel->velocityY + (targetSpeed - squirrel->velocityY) * SMOOTHING_FACTOR;
     }
 }
 

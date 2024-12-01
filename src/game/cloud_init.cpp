@@ -38,10 +38,10 @@ void CreateCloudsFromData(const CloudInitData* cloudList, int count) {
 }
 
 float GetCloudDensityMultiplier(float y) {
-    // Returns a value between 1.0 and 3.0 based on depth
-    // More clouds as you go deeper (higher y values)
+    // Returns a value between 3.0 and 1.0 based on depth
+    // Less clouds as you go deeper (higher y values)
     float depthRatio = y / GAME_HEIGHT;
-    return 1.0f + (depthRatio * 2.0f); // Linear increase up to 3x density
+    return 3.0f - (depthRatio * 2.0f); // Linear decrease down to 1x density
 }
 
 void GenerateRandomClouds(float playerStartY) {

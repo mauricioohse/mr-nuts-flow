@@ -18,7 +18,7 @@ const CloudInitData cloudList[] = {
 };
 // Constants for cloud generation
 #define MIN_CLOUD_SPACING 100.0f         // Minimum distance between clouds
-#define CLOUDS_PER_SECTION 3             // Base number of clouds per window height
+#define CLOUDS_PER_SECTION 5             // Base number of clouds per window height
 #define MAX_CLOUDS 1000                  // Maximum number of clouds to generate
 
 

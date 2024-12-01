@@ -13,7 +13,11 @@ void PeanutSystem::Update(float deltaTime, EntityManager* entities, ComponentArr
         (TransformComponent*)g_Engine.componentArrays.GetComponentData(g_Game.squirrelEntity, COMPONENT_TRANSFORM);
     SquirrelComponent* squirrel = 
         (SquirrelComponent*)g_Engine.componentArrays.GetComponentData(g_Game.squirrelEntity, COMPONENT_SQUIRREL);
+    CameraComponent* camera = 
+        (CameraComponent*)g_Engine.componentArrays.GetComponentData(g_Game.cameraEntity, COMPONENT_CAMERA);
     
+
+
     if (!squirrelTransform || !squirrel) return;
 
     // Update powerup timers
@@ -53,6 +57,9 @@ void PeanutSystem::Update(float deltaTime, EntityManager* entities, ComponentArr
                 switch (peanut->type) {
                     case PEANUT_TYPE_REGULAR:
                         squirrel->speedBoost += PEANUT_SPEED_BOOST;
+                        squirrel->velocityY += PEANUT_SPEED_BOOST*3;
+                        squirrel->gravity += SQUIRREL_GRAVITY/5;
+                        camera->cameraKick = -150.0f;
                         break;
 
                     case PEANUT_TYPE_SHIELD:

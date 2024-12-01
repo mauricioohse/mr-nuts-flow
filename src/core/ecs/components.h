@@ -189,6 +189,7 @@ struct CameraComponent : Component {
     float viewportWidth;     // Width of the camera view
     float viewportHeight;    // Height of the camera view
     EntityID targetEntity;   // Entity the camera should follow
+    float cameraKick;  
     
     // Bounds for camera movement
     float minX, maxX;        // Horizontal bounds
@@ -200,6 +201,7 @@ struct CameraComponent : Component {
         viewportWidth = width;
         viewportHeight = height;
         targetEntity = target;
+        cameraKick = 0;
         
         // Set reasonable bounds for our game world (3 windows wide, 50 windows tall)
         minX = 0.0f;

@@ -29,6 +29,7 @@ public:
     
     EntityID squirrelEntity;
     EntityID helicopterEntity;
+    EntityID cameraEntity;
 
 private:
     // Systems
@@ -44,7 +45,6 @@ private:
     MusicSystem musicSystem;
     
     // Entities
-    EntityID cameraEntity;
     EntityID backgroundEntity;
     EntityID bottomBackgroundEntity;
     

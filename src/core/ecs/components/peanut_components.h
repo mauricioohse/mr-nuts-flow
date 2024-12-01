@@ -8,7 +8,7 @@ typedef enum {
     PEANUT_TYPE_SUPER      // Both speed boost and immunity
 } PeanutType;
 
-#define PEANUT_SPEED_BOOST 200.0f        // Added to max speed
+#define PEANUT_SPEED_BOOST 100.0f        // Added to max speed
 #define PEANUT_SHIELD_DURATION 5.0f      // Seconds of immunity
 #define PEANUT_SUPER_DURATION 5.0f       // Seconds of super mode
 

@@ -180,11 +180,13 @@ void Game::Render() {
     char timerText[32];
     char heightText[32];
     char speedText[32];
+    char currentSpeedText[32];
     char posText[32];
     snprintf(fpsText, sizeof(fpsText), "FPS: %.1f", 1.0f / g_Engine.deltaTime);
     snprintf(timerText, sizeof(timerText), "Time: %.2f", gameTimer);
     snprintf(heightText, sizeof(heightText), "Height: %.0f", remainingHeight);
     snprintf(speedText, sizeof(speedText), "Max speed: %.0f", squirrel->maxSpeed);
+    snprintf(currentSpeedText, sizeof(currentSpeedText), "Speed: %.0f", squirrel->velocityY);
     snprintf(posText, sizeof(posText), "Pos: %.0f, %.0f", squirrelTransform->x, squirrelTransform->y);
 
     SDL_Color textColor = {255, 255, 255, 255};  // White color
@@ -199,12 +201,15 @@ void Game::Render() {
         // Render height below timer
         ResourceManager::RenderTextAlignedTopRight(fpsFont, heightText, textColor, 
             g_Engine.window->width - 10, 50);
-        // Render speed below height
+        // Render max speed below height
         ResourceManager::RenderTextAlignedTopRight(fpsFont, speedText, textColor, 
             g_Engine.window->width - 10, 70);
-        // Render position below speed
-        ResourceManager::RenderTextAlignedTopRight(fpsFont, posText, textColor, 
+        // Render current speed below max speed
+        ResourceManager::RenderTextAlignedTopRight(fpsFont, currentSpeedText, textColor, 
             g_Engine.window->width - 10, 90);
+        // Render position below current speed
+        ResourceManager::RenderTextAlignedTopRight(fpsFont, posText, textColor, 
+            g_Engine.window->width - 10, 110);
         
         // If game is finished, show completion message
         if (gameState == GAME_STATE_FINISHED) {
