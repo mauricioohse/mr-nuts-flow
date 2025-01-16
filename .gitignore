@@ -1,6 +1,7 @@
 # Build directories
 bin/
-web/
+web/index*
+*.zip
 
 # IDE files
 .vscode/
@@ -17,7 +18,7 @@ web/
 #temporarly so I dont feed git a bunch of files
 assets/
 include/
-dll/
+# dll/
 
 # Executables
 *.exe

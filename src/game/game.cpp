@@ -161,7 +161,11 @@ void Game::Update(float deltaTime) {
         // Check if squirrel reached bottom
         if (squirrelTransform->y >= GAME_HEIGHT + 400) {  // Leave some margin at bottom
             gameState = GAME_STATE_FINISHED;
-            
+
+            SpriteComponent *squirrelSprite =
+                (SpriteComponent *)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_SPRITE);
+            squirrelSprite->isVisible = 0;
+
             // Check if this is a new record
             if (gameTimer < bestTime) {
                 bestTime = gameTimer;
@@ -278,6 +282,62 @@ void Game::Render() {
             }
         }
     }
+
+    // Draw height progress bar on the right side
+    const int BAR_WIDTH = 32;
+    const int BAR_HEIGHT = 400;
+    const int BAR_RIGHT_MARGIN = 20;
+    const int BAR_TOP_MARGIN = 300;
+    
+    // Draw black background bar
+    SDL_Rect barRect = {
+        g_Engine.window->width - BAR_RIGHT_MARGIN - BAR_WIDTH,  // x position
+        BAR_TOP_MARGIN,                                         // y position
+        BAR_WIDTH,                                              // width
+        BAR_HEIGHT                                              // height
+    };
+    
+    SDL_SetRenderDrawColor(g_Engine.window->renderer, 0, 0, 0, 255);  // Black
+    SDL_RenderFillRect(g_Engine.window->renderer, &barRect);
+    
+    // Draw border
+    SDL_SetRenderDrawColor(g_Engine.window->renderer, 255, 255, 255, 255);  // White
+    SDL_RenderDrawRect(g_Engine.window->renderer, &barRect);
+    
+    // Calculate squirrel's progress
+    if (squirrelTransform) {
+        // Calculate position on bar (invert because y increases downward)
+        float progress = (squirrelTransform->y / GAME_HEIGHT);
+        float markerY = BAR_TOP_MARGIN + (BAR_HEIGHT * progress);
+        
+        // Draw squirrel marker
+        Texture* squirrelTexture = ResourceManager::GetTexture(TEXTURE_SQUIRREL_SITTING);
+        if (squirrelTexture) {
+            // Calculate scaled dimensions
+            const float SCALE = 0.5f;
+            int scaledWidth = squirrelTexture->width * SCALE;
+            int scaledHeight = squirrelTexture->height * SCALE;
+            
+            // Center the squirrel sprite on the bar
+            SDL_Rect destRect = {
+                barRect.x - (scaledWidth/2) + (BAR_WIDTH/2),  // Center horizontally on bar
+                (int)markerY - (scaledHeight/2),                   // Center vertically on position
+                scaledWidth,
+                scaledHeight
+            };
+            
+            // Draw the squirrel marker
+            SDL_RenderCopyEx(
+                g_Engine.window->renderer,
+                squirrelTexture->sdlTexture,
+                NULL,
+                &destRect,
+                0,      // No rotation
+                NULL,   // Rotate around center
+                SDL_FLIP_NONE
+            );
+        }
+    }
 }
 
 void Game::Cleanup() {
@@ -290,6 +350,13 @@ void Game::Cleanup() {
 void Game::Reset() {
     // Reset game state
     gameState = GAME_STATE_PLAYING;
+
+    // Reset squirrel sprite
+    SpriteComponent* squirrelSprite = 
+        (SpriteComponent*)g_Engine.componentArrays.GetComponentData(squirrelEntity, COMPONENT_SPRITE);
+    squirrelSprite->texture = ResourceManager::GetTexture(TEXTURE_SQUIRREL_SITTING);
+    squirrelSprite->isVisible=1;
+
     gameTimer = 0.0f;
     isNewRecord = false;
     
